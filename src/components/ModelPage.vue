@@ -15,7 +15,7 @@
             </div>
             <button type="submit">Submit</button>
         </form>
-        <div v-if="response">
+        <div v-if="response"> 
             <h2>{{ response.id }}</h2>
             <img :src="response.output_image" alt="Image">
         </div>
@@ -141,7 +141,7 @@ $color-quaternary: #A0AAB2;
             border: 2px yellow solid;
             img {
                 border: 1px solid red;
-                width: 70%;
+                width: 80%;
                 height: auto;
             }
         }
