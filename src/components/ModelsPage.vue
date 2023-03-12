@@ -1,7 +1,7 @@
 <template>
     <div class="models">
         <div class="box-container">
-            <ModelCard :model="models[0]"/>
+            <ModelCard :model="models[0]" />
             <ModelCard :model="models[1]" />
             <ModelCard :model="models[2]" />
             <ModelCard :model="models[3]" />
@@ -17,31 +17,31 @@ export default {
         ModelCard,
     },
     data() {
-    return {
-        models: [
-            {
-                id: "anaoas",
-                name: "ANAoAS",
-                time: "2 minúty",
-            },
-            {
-                id: "msg-net-istucnn",
-                name: "MSG-Net-ISTUCNN",
-                time: "2 minúty"
-            },
-            {
-                id: "istucnn-2",
-                name: "ISTUCNN 2",
-                time: "2 minúty"
-            },
-            {
-                id: "nnst",
-                name: "NNST",
-                time: "2 minúty"
-            }
-        ]
+        return {
+            models: [
+                {
+                    id: "anaoas",
+                    name: "ANAoAS",
+                    time: "2 minúty",
+                },
+                {
+                    id: "msg-net-istucnn",
+                    name: "MSG-Net-ISTUCNN",
+                    time: "2 minúty"
+                },
+                {
+                    id: "istucnn-2",
+                    name: "ISTUCNN 2",
+                    time: "2 minúty"
+                },
+                {
+                    id: "nnst",
+                    name: "NNST",
+                    time: "2 minúty"
+                }
+            ]
+        }
     }
-  }
 };
 </script>
   

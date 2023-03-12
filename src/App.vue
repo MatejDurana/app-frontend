@@ -17,7 +17,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 $color-primary: #2E3532;
 $color-secondary: #7E9181;
 $color-tertiary: #C7CEDB;
@@ -27,17 +26,20 @@ html {
   font-size: 16px;
   font-family: Palatino, sans-serif;
   height: 100%;
-  overflow: hidden;
 }
-.main{
+
+.main {
   background-color: $color-primary;
 }
-.header{
+
+.header {
   height: 10vh;
 }
-.view{
+
+.view {
   height: 90vh;
   width: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -61,13 +63,14 @@ textarea {
   margin: 0;
   outline: none;
   border: none;
+
   &:focus {
     outline: none;
   }
 }
-a{
+
+a {
   text-decoration: none;
 
 }
-
 </style>

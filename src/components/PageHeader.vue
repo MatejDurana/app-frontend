@@ -9,11 +9,10 @@
 </template>
 
 <style lang="scss">
-
-$color-primary: #2E3532;
-$color-secondary: #7E9181;
-$color-tertiary: #C7CEDB;
-$color-quaternary: #A0AAB2;
+$color-primary: #2e3532;
+$color-secondary: #7e9181;
+$color-tertiary: #c7cedb;
+$color-quaternary: #a0aab2;
 
 .header {
   display: flex;
@@ -40,6 +39,7 @@ $color-quaternary: #A0AAB2;
 .nav {
   display: flex;
   justify-content: flex-end;
+  gap: 1rem;
 }
 
 .nav-item {
