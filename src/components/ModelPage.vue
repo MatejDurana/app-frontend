@@ -25,7 +25,7 @@
             <div class="left">
                 <div class="content_image">
                     <button @click="openModal('content')">
-                        <img v-if="contentImage" :src="contentImage" alt="Obrázok obsahu">
+                        <img v-if="contentData.image" :src="contentData.image" alt="Obrázok obsahu">
                         <div v-else class="no_image">
                             Vybrať obrázok obsahu
                         </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="style_image">
                     <button @click="openModal('style')">
-                        <img v-if="styleImage" :src="styleImage" alt="Obrázok štýlu">
+                        <img v-if="styleData.image" :src="styleData.image" alt="Obrázok štýlu">
                         <div v-else class="no_image">
                             Vybrať obrázok štýlu
                         </div>
@@ -77,14 +77,22 @@ export default {
         return {
             id: this.$route.params.id,
             showModal: false,
-            contentImage: null,
-            styleImage: null,
+
             response: null,
             type: null,
-            currImageData: {
-                image: this.contentImage,
+            contentData: {
+                fullImage: null,
+                image: null,
                 cropBoxData: null,
-            }
+                imageData: null,
+            },
+            styleData: {
+                fullImage: null,
+                image: null,
+                cropBoxData: null,
+                imageData: null,
+            },
+            currImageData: {}
         }
     },
     created() {
@@ -92,20 +100,25 @@ export default {
     },
     methods: {
         handleImageData(croppedData) {
-            console.log("returned data");
-            console.log(croppedData);
-            console.log("returned data");
+
             if (this.type == "content") {
-                this.contentImage = croppedData.image;
+                this.contentData = croppedData;
             }
             if (this.type == "style") {
-                this.styleImage = croppedData.image;
+                this.styleData = croppedData;
             }
             this.showModal = false;
 
         },
+
         openModal(type) {
             this.type = type;
+            if (this.type == "content") {
+                this.currImageData = this.contentData;
+            }
+            if (this.type == "style") {
+                this.currImageData = this.styleData;
+            }
             this.showModal = true;
         },
         closeModal(event) {
@@ -122,9 +135,9 @@ export default {
             reader.readAsDataURL(file);
             reader.onload = () => {
                 if (type == "content")
-                    this.contentImage = reader.result;
+                    this.contentData.image = reader.result;
                 if (type == "style")
-                    this.styleImage = reader.result;
+                    this.styleData.image = reader.result;
 
                 console.log(reader.result)
             };
@@ -133,8 +146,8 @@ export default {
             try {
                 const response = await axios.post('api/model1', {
                     id: this.id,
-                    contentImage: this.contentImage,
-                    styleImage: this.styleImage,
+                    contentData: this.contentData.image,
+                    styleData: this.styleData.image,
                 }, {
                     headers: {
                         'Content-Type': 'application/json'
@@ -287,7 +300,6 @@ $color-quaternary: #A0AAB2;
         width: 100%;
         background-color: rgba(0, 0, 0, 0.4);
         max-height: 800px;
-        overflow-y: auto;
 
         /* Modal content */
         .modal-content {
@@ -296,9 +308,11 @@ $color-quaternary: #A0AAB2;
             border-radius: 5px;
 
             width: 65%;
-            height: 80%;
+            height: 85%;
             padding: 10px;
             box-sizing: border-box;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         /* Modal header */

@@ -2,7 +2,7 @@
     <div>
 
         <input ref="input" type="file" name="image" accept="image/*" @change="setImage" />
-
+        <img ref="einstein" src="../assets/images/einstein.jpeg" alt="Einstein">
         <div class="content">
             <section class="cropper-area">
                 <div class="img-cropper">
@@ -12,10 +12,10 @@
                 </div>
                 <div class="actions">
                     <a href="#" role="button" @click.prevent="setCrop()">
-                        Crop
+                        +
                     </a>
                     <a href="#" role="button" @click.prevent="setMove()">
-                        Move
+                        X
                     </a>
                     <a href="#" role="button" @click.prevent="zoom(0.2)">
                         Zoom In
@@ -48,32 +48,18 @@
                         Flip Y
                     </a>
                     <a href="#" role="button" @click.prevent="cropImage">
-                        Crop
+                        Orezať
                     </a>
                     <a href="#" role="button" @click.prevent="reset">
-                        Reset
-                    </a>
-                    <a href="#" role="button" @click.prevent="getData">
-                        Get Data
-                    </a>
-                    <a href="#" role="button" @click.prevent="setData">
-                        Set Data
-                    </a>
-                    <a href="#" role="button" @click.prevent="getCropBoxData">
-                        Get CropBox Data
-                    </a>
-                    <a href="#" role="button" @click.prevent="setCropBoxData">
-                        Set CropBox Data
+                        Resetovať
                     </a>
                     <a href="#" role="button" @click.prevent="showFileChooser">
-                        Upload Image
+                        Nahrať obrázok
                     </a>
                     <a href="#" role="button" @click.prevent="sendImage">
                         Potvrdiť
                     </a>
                 </div>
-
-                <textarea v-model="data" />
             </section>
             <section class="preview-area">
                 <p>Ukážka</p>
@@ -103,27 +89,55 @@ export default {
     },
     data() {
         return {
-            croppData: null,
-            imgSrc: '/assets/images/picasso.jpg',
+            croppData: {
+                fullImage: null,
+                image: null,
+                cropBoxData: null,
+                imageData: null,
+            },
             cropImg: '',
-            data: null,
+            fullImage: '',
+            cropImageData: null,
+            cropBoxData: null,
             width: 1920 / 4,
             height: 1080 / 4,
         };
     },
     mounted() {
-        if (this.imageData.image)
-            this.$refs.cropper.replace(this.imageData.image)
+
+        if (this.imageData.fullImage) {
+            this.$refs.cropper.replace(this.imageData.fullImage);
+            this.fullImage = this.imageData.fullImage;
+            this.cropBoxData = this.imageData.cropBoxData;
+            this.cropImageData = this.imageData.cropImageData;
+
+            setTimeout(() => {
+                this.setCropBoxData();
+                this.setData();
+            }, 200);
+
+        }
+        else {
+            console.log("Vkladam default einstein");
+            this.fullImage = this.convertImageToBase64()
+        }
+
+        this.croppData = this.imageData;
+
     },
     methods: {
         cropImage() {
-            // get image data for post processing, e.g. upload or setting image src
             this.cropImg = this.$refs.cropper.getCroppedCanvas({
                 width: this.width,
                 height: this.height,
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high',
             }).toDataURL();
+
+
+            this.getData();
+            this.getCropBoxData();
+
         },
         sendImage() {
             if (this.cropImg == '') {
@@ -131,12 +145,46 @@ export default {
                 return
             }
 
-            console.log("MODAL");
-            console.log(this.imageData);
-            console.log("MODAL");
-            this.croppData = this.imageData;
             this.croppData.image = this.cropImg;
+            this.croppData.fullImage = this.fullImage;
+            this.croppData.cropBoxData = this.cropBoxData;
+            this.croppData.cropImageData = this.cropImageData;
+
             this.$emit('handleImageData', this.croppData)
+        },
+
+        convertImageToBase64() {
+            const canvas = document.createElement('canvas')
+            canvas.width = this.$refs.einstein.width
+            canvas.height = this.$refs.einstein.height
+            canvas.getContext('2d').drawImage(this.$refs.einstein, 0, 0)
+
+            const base64 = canvas.toDataURL()
+            return base64;
+        },
+
+
+        getCropBoxData() {
+            this.cropBoxData = JSON.stringify(this.$refs.cropper.getCropBoxData(), null, 4);
+        },
+        getData() {
+            this.cropImageData = JSON.stringify(this.$refs.cropper.getData(), null, 4);
+        },
+        setCropBoxData() {
+            if (!this.cropBoxData) return;
+            this.$refs.cropper.setCropBoxData(JSON.parse(this.cropBoxData));
+        },
+        setData() {
+            if (!this.cropImageData) return;
+            this.$refs.cropper.setData(JSON.parse(this.cropImageData));
+        },
+
+
+        move(offsetX, offsetY) {
+            this.$refs.cropper.move(offsetX, offsetY);
+        },
+        reset() {
+            this.$refs.cropper.reset();
         },
         flipX() {
             const dom = this.$refs.flipX;
@@ -152,31 +200,10 @@ export default {
             this.$refs.cropper.scaleY(scale);
             dom.setAttribute('data-scale', scale);
         },
-        getCropBoxData() {
-            this.data = JSON.stringify(this.$refs.cropper.getCropBoxData(), null, 4);
-        },
-        getData() {
-            this.data = JSON.stringify(this.$refs.cropper.getData(), null, 4);
-        },
-        move(offsetX, offsetY) {
-            this.$refs.cropper.move(offsetX, offsetY);
-        },
-        reset() {
-            this.$refs.cropper.reset();
-        },
         rotate(deg) {
             this.$refs.cropper.rotate(deg);
         },
-        setCropBoxData() {
-            if (!this.data) return;
 
-            this.$refs.cropper.setCropBoxData(JSON.parse(this.data));
-        },
-        setData() {
-            if (!this.data) return;
-
-            this.$refs.cropper.setData(JSON.parse(this.data));
-        },
         setImage(e) {
             const file = e.target.files[0];
 
@@ -189,7 +216,7 @@ export default {
                 const reader = new FileReader();
 
                 reader.onload = (event) => {
-                    this.imgSrc = event.target.result;
+                    this.fullImage = event.target.result;
                     // rebuild cropperjs with the updated source
                     this.$refs.cropper.replace(event.target.result);
                 };
