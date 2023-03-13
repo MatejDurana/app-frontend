@@ -1,24 +1,6 @@
 <template>
     <div class="modelPage">
-        <form @submit.prevent="sendData" style="display: none;">
-            <div>
-                <label for="id">ID:</label>
-                <input type="number" id="id" v-model="id" required>
-            </div>
-            <div>
-                <label for="content_image">Content image:</label>
-                <input type="file" id="content_image" @change="encodeImage($event, 'content')" required>
-            </div>
-            <div>
-                <label for="style_image">Style image:</label>
-                <input type="file" id="style_image" @change="encodeImage($event, 'style')" required>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-        <div v-if="response">
-            <h2>{{ response.id }}</h2>
-            <img :src="response.output_image" alt="Image">
-        </div>
+
 
         <div class="params"></div>
         <div class="images">
@@ -42,14 +24,21 @@
             </div>
             <div class="right">
                 <div class="final_image">
-                    <img src="../assets/logo.png" alt="">
+                    <img v-if="response" :src="response.output_image" alt="Image">
+                    <div v-else class="no_response">
+                        <h1>Neni vysledok</h1>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="btn">
-            <button>Generovať</button>
-        </div>
+        <form @submit.prevent="sendData">
+            <div class="btn">
+                <button type="submit" :disabled="disableBtn">Generovať</button>
+            </div>
+
+        </form>
+
         <div class="modal" v-if="showModal" @click.self="showModal = false">
             <div class="modal-content">
                 <div class="modal-header">
@@ -77,6 +66,7 @@ export default {
         return {
             id: this.$route.params.id,
             showModal: false,
+            disableBtn: false,
 
             response: null,
             type: null,
@@ -99,17 +89,6 @@ export default {
         console.log(this.id)
     },
     methods: {
-        handleImageData(croppedData) {
-
-            if (this.type == "content") {
-                this.contentData = croppedData;
-            }
-            if (this.type == "style") {
-                this.styleData = croppedData;
-            }
-            this.showModal = false;
-
-        },
 
         openModal(type) {
             this.type = type;
@@ -127,6 +106,17 @@ export default {
             }
         },
 
+        handleImageData(croppedData) {
+
+            if (this.type == "content") {
+                this.contentData = croppedData;
+            }
+            if (this.type == "style") {
+                this.styleData = croppedData;
+            }
+            this.showModal = false;
+
+        },
 
 
         encodeImage(event, type) {
@@ -144,16 +134,20 @@ export default {
         },
         async sendData() {
             try {
-                const response = await axios.post('api/model1', {
+                this.disableBtn = true;
+                const response = await axios.post('../api/model1', {
                     id: this.id,
                     contentData: this.contentData.image,
                     styleData: this.styleData.image,
                 }, {
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    timeout: 1200000000
                 });
+
                 this.response = response.data;
+                this.disableBtn = false;
             } catch (error) {
                 console.error(error);
             }
@@ -189,7 +183,6 @@ $color-quaternary: #A0AAB2;
         align-items: center;
         flex-wrap: nowrap;
         margin-bottom: 2rem;
-        border: 2px white solid;
 
         .left {
             display: flex;
@@ -197,7 +190,6 @@ $color-quaternary: #A0AAB2;
             justify-content: center;
             align-items: center;
             width: 30%;
-            border: 2px purple solid;
 
             &>div {
                 display: flex;
@@ -227,7 +219,6 @@ $color-quaternary: #A0AAB2;
                         max-width: 100%;
                         max-height: 100%;
                         object-fit: contain;
-                        border: 1px solid red;
                     }
                 }
 
@@ -244,7 +235,6 @@ $color-quaternary: #A0AAB2;
             justify-content: center;
             align-items: center;
             width: 50%;
-            border: 2px yellow solid;
 
             &>div {
                 display: flex;
@@ -258,7 +248,11 @@ $color-quaternary: #A0AAB2;
                     max-width: 100%;
                     max-height: 100%;
                     object-fit: contain;
-                    border: 1px solid red;
+                }
+
+                .no_response {
+                    width: 100%;
+                    border: 1px solid $color-quaternary;
                 }
             }
         }
@@ -299,7 +293,6 @@ $color-quaternary: #A0AAB2;
         height: 100%;
         width: 100%;
         background-color: rgba(0, 0, 0, 0.4);
-        max-height: 800px;
 
         /* Modal content */
         .modal-content {
@@ -307,6 +300,7 @@ $color-quaternary: #A0AAB2;
             padding: 1.5rem;
             border-radius: 5px;
 
+            max-height: 800px;
             width: 65%;
             height: 85%;
             padding: 10px;

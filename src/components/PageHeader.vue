@@ -23,6 +23,7 @@ $color-quaternary: #a0aab2;
   color: $color-tertiary;
   font-size: 2rem;
   padding-inline: 4rem;
+  border-bottom: 2px solid $color-quaternary;
 }
 
 .logo {

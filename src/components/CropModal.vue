@@ -7,10 +7,19 @@
             <section class="cropper-area">
                 <div class="img-cropper">
                     <vue-cropper ref="cropper" :aspect-ratio="16 / 9" :src="require(`@/assets/images/einstein.jpeg`)"
-                        preview=".preview" :guides=false :center=false :viewMode=2 :background=false />
+                        preview=".preview" :guides=false :center=false :viewMode=2 :background=false autoCropArea="1" />
 
                 </div>
                 <div class="actions">
+                    <a href="#" role="button" @click.prevent="cropImage">
+                        Orezať
+                    </a>
+                    <a href="#" role="button" @click.prevent="sendImage">
+                        Potvrdiť
+                    </a>
+                    <br>
+                    <br>
+
                     <a href="#" role="button" @click.prevent="setCrop()">
                         +
                     </a>
@@ -56,9 +65,7 @@
                     <a href="#" role="button" @click.prevent="showFileChooser">
                         Nahrať obrázok
                     </a>
-                    <a href="#" role="button" @click.prevent="sendImage">
-                        Potvrdiť
-                    </a>
+
                 </div>
             </section>
             <section class="preview-area">
@@ -105,6 +112,11 @@ export default {
     },
     mounted() {
 
+
+        // console.log("Dostal som")
+        // console.log(this.imageData)
+        // console.log("Dostal som")
+
         if (this.imageData.fullImage) {
             this.$refs.cropper.replace(this.imageData.fullImage);
             this.fullImage = this.imageData.fullImage;
@@ -118,8 +130,9 @@ export default {
 
         }
         else {
-            console.log("Vkladam default einstein");
             this.fullImage = this.convertImageToBase64()
+            //console.log("Vkladam default einstein");
+            //console.log(this.fullImage)
         }
 
         this.croppData = this.imageData;
@@ -149,6 +162,13 @@ export default {
             this.croppData.fullImage = this.fullImage;
             this.croppData.cropBoxData = this.cropBoxData;
             this.croppData.cropImageData = this.cropImageData;
+
+
+
+            // console.log("Dostal som")
+            // console.log(this.croppData)
+            // console.log("Dostal som")
+
 
             this.$emit('handleImageData', this.croppData)
         },

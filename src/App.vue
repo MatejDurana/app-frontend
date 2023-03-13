@@ -37,6 +37,7 @@ html {
 }
 
 .view {
+  padding-top: 1rem;
   height: 90vh;
   width: 100%;
   overflow: hidden;
