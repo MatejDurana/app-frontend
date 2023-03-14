@@ -26,7 +26,7 @@
                 <div class="final_image">
                     <img v-if="response" :src="response.output_image" alt="Image">
                     <div v-else class="no_response">
-                        <h1>Neni vysledok</h1>
+                        <h2>Výsledok nie je vygenerovaný</h2>
                     </div>
                 </div>
             </div>
@@ -42,11 +42,11 @@
         <div class="modal" v-if="showModal" @click.self="showModal = false">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h2>Orezanie obrázka:</h2>
                     <span class="close-button" @click="showModal = false">&times;</span>
-                    <h2>Orezanie obrázka</h2>
                 </div>
                 <div class="modal-body">
-                    <CropModal :imageData="currImageData" @handleImageData="handleImageData" />
+                    <CropModal :imageData="currImageData" :type="this.type" @handleImageData="handleImageData" />
                 </div>
             </div>
         </div>
@@ -212,6 +212,11 @@ $color-quaternary: #A0AAB2;
                         width: 100%;
                         height: 100%;
                         background-color: $color-quaternary;
+                        border-radius: 20px;
+                        font-size: 2rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                     }
 
                     img {
@@ -253,6 +258,11 @@ $color-quaternary: #A0AAB2;
                 .no_response {
                     width: 100%;
                     border: 1px solid $color-quaternary;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: $color-quaternary;
+                    font-size: 2rem;
                 }
             }
         }
@@ -303,7 +313,6 @@ $color-quaternary: #A0AAB2;
             max-height: 800px;
             width: 65%;
             height: 85%;
-            padding: 10px;
             box-sizing: border-box;
             overflow-y: auto;
             overflow-x: hidden;
@@ -312,6 +321,7 @@ $color-quaternary: #A0AAB2;
         /* Modal header */
         .modal-header {
             display: flex;
+            padding-inline: 2rem;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;

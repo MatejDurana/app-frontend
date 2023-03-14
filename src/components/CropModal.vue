@@ -1,14 +1,27 @@
 <template>
     <div>
-
         <input ref="input" type="file" name="image" accept="image/*" @change="setImage" />
-        <img ref="einstein" src="../assets/images/einstein.jpeg" alt="Einstein">
+
+        <div class="top">
+            <h2>Obrázky:</h2>
+            <div class="imagesSelect">
+                <div class="imageDiv" v-for="(image, index) in this.selectedImages" :key="index">
+                    <img :src="`/images/${image.src}`" @click="setClickedImage('/images/' + image.src)">
+                </div>
+                alebo
+                <a href="#" role="button" @click.prevent="showFileChooser">
+                    Nahrať vlastný
+                </a>
+            </div>
+        </div>
+
         <div class="content">
+
+
             <section class="cropper-area">
                 <div class="img-cropper">
-                    <vue-cropper ref="cropper" :aspect-ratio="16 / 9" :src="require(`@/assets/images/einstein.jpeg`)"
-                        preview=".preview" :guides=false :center=false :viewMode=2 :background=false autoCropArea="1" />
-
+                    <vue-cropper ref="cropper" :aspect-ratio="16 / 9" :src="defaultImage" preview=".preview" :guides=false
+                        :center=false :viewMode=2 :background=false :autoCropArea=0.9 />
                 </div>
                 <div class="actions">
                     <a href="#" role="button" @click.prevent="cropImage">
@@ -62,9 +75,7 @@
                     <a href="#" role="button" @click.prevent="reset">
                         Resetovať
                     </a>
-                    <a href="#" role="button" @click.prevent="showFileChooser">
-                        Nahrať obrázok
-                    </a>
+
 
                 </div>
             </section>
@@ -93,9 +104,30 @@ export default {
         imageData: {
             type: Object,
         },
+        type: {
+            type: String,
+        }
+    },
+    computed: {
+        selectedImages() {
+            return this.type === "content" ? this.contentImages : this.styleImages;
+        },
     },
     data() {
         return {
+            contentImages: [
+                { src: 'dog.jpg' },
+                { src: 'einstein.jpeg' },
+                { src: 'town.jpeg' },
+                { src: 'town2.jpg' },
+            ],
+            styleImages: [
+                { src: 'night.jpg' },
+                { src: 'picasso.jpg' },
+                { src: 'gogh.jpg' },
+                { src: 'vykrik.jpg' },
+            ],
+
             croppData: {
                 fullImage: null,
                 image: null,
@@ -108,11 +140,10 @@ export default {
             cropBoxData: null,
             width: 1920 / 4,
             height: 1080 / 4,
+            defaultImage: "/images/dog.jpg",
         };
     },
     mounted() {
-
-
         // console.log("Dostal som")
         // console.log(this.imageData)
         // console.log("Dostal som")
@@ -130,7 +161,14 @@ export default {
 
         }
         else {
-            this.fullImage = this.convertImageToBase64()
+            let imgSrc = "/images/";
+            if (this.type === "content")
+                imgSrc += this.contentImages[0].src
+            else
+                imgSrc += this.styleImages[0].src;
+
+            console.log(imgSrc)
+            this.fullImage = this.setClickedImage(imgSrc)
             //console.log("Vkladam default einstein");
             //console.log(this.fullImage)
         }
@@ -173,16 +211,18 @@ export default {
             this.$emit('handleImageData', this.croppData)
         },
 
-        convertImageToBase64() {
-            const canvas = document.createElement('canvas')
-            canvas.width = this.$refs.einstein.width
-            canvas.height = this.$refs.einstein.height
-            canvas.getContext('2d').drawImage(this.$refs.einstein, 0, 0)
 
-            const base64 = canvas.toDataURL()
-            return base64;
+        async setClickedImage(src) {
+            const response = await fetch(src)
+            const blob = await response.blob()
+
+            const reader = new FileReader()
+            reader.readAsDataURL(blob)
+            reader.onload = () => {
+                this.fullImage = reader.result
+                this.$refs.cropper.replace(this.fullImage);
+            }
         },
-
 
         getCropBoxData() {
             this.cropBoxData = JSON.stringify(this.$refs.cropper.getCropBoxData(), null, 4);
@@ -266,6 +306,39 @@ export default {
 <style lang="scss">
 input[type="file"] {
     display: none;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-inline: 2rem;
+    margin-bottom: 2rem;
+    gap: 2rem;
+
+    .imagesSelect {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+
+        &>div {
+            cursor: pointer;
+
+            img {
+                width: 150px;
+            }
+        }
+
+        a {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #0062CC;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+    }
 }
 
 .content {
