@@ -24,9 +24,6 @@
                         :center=false :viewMode=2 :background=false :autoCropArea=0.9 />
                 </div>
                 <div class="actions">
-                    <a href="#" role="button" @click.prevent="cropImage">
-                        Orezať
-                    </a>
                     <a href="#" role="button" @click.prevent="sendImage">
                         Potvrdiť
                     </a>
@@ -69,9 +66,7 @@
                     <a ref="flipY" href="#" role="button" @click.prevent="flipY">
                         Flip Y
                     </a>
-                    <a href="#" role="button" @click.prevent="cropImage">
-                        Orezať
-                    </a>
+
                     <a href="#" role="button" @click.prevent="reset">
                         Resetovať
                     </a>
@@ -82,11 +77,6 @@
             <section class="preview-area">
                 <p>Ukážka</p>
                 <div class="preview" />
-                <p>Vyrezaný obrázok</p>
-                <div class="cropped-image">
-                    <img v-if="cropImg" :src="cropImg" alt="Cropped Image" />
-                    <div v-else class="crop-placeholder" />
-                </div>
             </section>
         </div>
     </div>
@@ -167,7 +157,7 @@ export default {
             else
                 imgSrc += this.styleImages[0].src;
 
-            console.log(imgSrc)
+            //console.log(imgSrc)
             this.fullImage = this.setClickedImage(imgSrc)
             //console.log("Vkladam default einstein");
             //console.log(this.fullImage)
@@ -177,7 +167,7 @@ export default {
 
     },
     methods: {
-        cropImage() {
+        sendImage() {
             this.cropImg = this.$refs.cropper.getCroppedCanvas({
                 width: this.width,
                 height: this.height,
@@ -188,13 +178,6 @@ export default {
 
             this.getData();
             this.getCropBoxData();
-
-        },
-        sendImage() {
-            if (this.cropImg == '') {
-                alert("Vyrežte obrázok")
-                return
-            }
 
             this.croppData.image = this.cropImg;
             this.croppData.fullImage = this.fullImage;

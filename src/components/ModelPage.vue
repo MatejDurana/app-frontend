@@ -24,7 +24,7 @@
             </div>
             <div class="right">
                 <div class="final_image">
-                    <img v-if="response" :src="response.output_image" alt="Image">
+                    <img v-if="response_image" :src="response_image" alt="Image">
                     <div v-else class="no_response">
                         <h2>Výsledok nie je vygenerovaný</h2>
                     </div>
@@ -32,12 +32,18 @@
             </div>
         </div>
 
-        <form @submit.prevent="sendData">
-            <div class="btn">
-                <button type="submit" :disabled="disableBtn">Generovať</button>
-            </div>
-
-        </form>
+        <div style="display: flex;">
+            <form @submit.prevent="sendData">
+                <div class="btn">
+                    <button type="submit" :disabled="disableBtn">Generovať</button>
+                </div>
+            </form>
+            <form @submit.prevent="closeProcess">
+                <div class="btn">
+                    <button type="submit">Zrušiť</button>
+                </div>
+            </form>
+        </div>
 
         <div class="modal" v-if="showModal" @click.self="showModal = false">
             <div class="modal-content">
@@ -67,8 +73,9 @@ export default {
             id: this.$route.params.id,
             showModal: false,
             disableBtn: false,
+            isRunning: false,
 
-            response: null,
+            response_image: null,
             type: null,
             contentData: {
                 fullImage: null,
@@ -87,6 +94,10 @@ export default {
     },
     created() {
         console.log(this.id)
+    },
+    unmounted() {
+        console.log("JAKO")
+        this.closeProcess()
     },
     methods: {
 
@@ -132,10 +143,12 @@ export default {
                 console.log(reader.result)
             };
         },
+
+
         async sendData() {
             try {
                 this.disableBtn = true;
-                const response = await axios.post('../api/model1', {
+                const response = await axios.post('../api/startProcess', {
                     id: this.id,
                     contentData: this.contentData.image,
                     styleData: this.styleData.image,
@@ -143,11 +156,73 @@ export default {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    timeout: 1200000000
                 });
 
-                this.response = response.data;
+                //this.response = response.data;
+                console.log(response.data)
                 this.disableBtn = false;
+
+                this.isRunning = true;
+
+                let intervalTime = 1000;
+
+                if (this.id == "anaoas")
+                    intervalTime = 5000;
+                else if (this.id == "msg-net-istucnn")
+                    intervalTime = 1000;
+                else if (this.id == "istucnn-2")
+                    intervalTime = 1000;
+                else if (this.id == "nnst")
+                    intervalTime = 1000;
+
+                this.checkProcess(intervalTime);
+
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async checkProcess(intervalTime) {
+            console.log("Zacinam check")
+            let intervalId = setInterval(async () => {
+                console.log("Checkujem")
+                try {
+                    const response = await axios.post('../api/checkProcess', {}, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    });
+
+                    let res = response.data
+                    console.log(res)
+
+                    if (res.output_image)
+                        this.response_image = res.output_image
+
+                    if (!res.isRunning) {
+                        this.isRunning = false
+                        console.log("Process skoncil, koncim check")
+                        clearInterval(intervalId);
+                    }
+
+
+                } catch (error) {
+                    console.error(error);
+                }
+            }, intervalTime);
+
+            console.log("koncim check")
+        },
+        async closeProcess() {
+            try {
+                const response = await axios.post('../api/closeProcess', {}, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+
+                console.log(response.data);
+                this.isRunning = false;
+
             } catch (error) {
                 console.error(error);
             }
