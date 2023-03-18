@@ -17,19 +17,27 @@ export default {
 </script>
 
 <style lang="scss">
-$color-primary: #2E3532;
-$color-secondary: #7E9181;
-$color-tertiary: #C7CEDB;
-$color-quaternary: #A0AAB2;
+$color1: #F5F5F5;
+$color2: #00A499;
+$color3: #1A1A1A;
+$color4: #E5E5E2;
+$color5: #1E2838;
+
+@font-face {
+  font-family: "Drive";
+  src: url("../public/fonts/Drive/Drive-Regular.otf");
+  font-weight: normal;
+  font-style: normal;
+}
 
 html {
   font-size: 16px;
-  font-family: Palatino, sans-serif;
+  font-family: "Drive", sans-serif;
   height: 100%;
 }
 
 .main {
-  background-color: $color-primary;
+  background-color: $color4;
 }
 
 .header {

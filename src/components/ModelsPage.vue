@@ -22,21 +22,25 @@ export default {
                 {
                     id: "anaoas",
                     name: "ANAoAS",
+                    fullname: "A Neural Algorithm of Artistic Style",
                     time: "2 minúty",
                 },
                 {
                     id: "msg-net-istucnn",
                     name: "MSG-Net-ISTUCNN",
+                    fullname: "Multi-style Generative Network - Image Style Transfer Using CNNs",
                     time: "2 minúty"
                 },
                 {
                     id: "istucnn-2",
                     name: "ISTUCNN 2",
+                    fullname: "Image Style Transfer Using CNNs",
                     time: "2 minúty"
                 },
                 {
                     id: "nnst",
                     name: "NNST",
+                    fullname: "Neural Neighbor Style Transfer",
                     time: "2 minúty"
                 }
             ]
@@ -46,10 +50,11 @@ export default {
 </script>
   
 <style lang="scss" scoped>
-$color-primary: #2E3532;
-$color-secondary: #7E9181;
-$color-tertiary: #C7CEDB;
-$color-quaternary: #A0AAB2;
+$color1: #F5F5F5;
+$color2: #00A499;
+$color3: #1A1A1A;
+$color4: #E5E5E2;
+$color5: #1E2838;
 
 .models {
     width: 100%;

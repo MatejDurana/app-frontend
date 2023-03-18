@@ -6,6 +6,7 @@
         <div class="images">
             <div class="left">
                 <div class="content_image">
+                    <span>Obrázok obsahu</span>
                     <button @click="openModal('content')">
                         <img v-if="contentData.image" :src="contentData.image" alt="Obrázok obsahu">
                         <div v-else class="no_image">
@@ -14,6 +15,7 @@
                     </button>
                 </div>
                 <div class="style_image">
+                    <span>Obrázok štýlu</span>
                     <button @click="openModal('style')">
                         <img v-if="styleData.image" :src="styleData.image" alt="Obrázok štýlu">
                         <div v-else class="no_image">
@@ -23,7 +25,11 @@
                 </div>
             </div>
             <div class="right">
+                <span>Výsledný obrázok</span>
                 <div class="final_image">
+                    <div :class="(this.isRunning ? '' : 'hidden') + ' spinner'">
+
+                    </div>
                     <img v-if="response_image" :src="response_image" alt="Image">
                     <div v-else class="no_response">
                         <h2>Výsledok nie je vygenerovaný</h2>
@@ -32,15 +38,17 @@
             </div>
         </div>
 
-        <div style="display: flex;">
+        <div class="buttons">
             <form @submit.prevent="sendData">
                 <div class="btn">
-                    <button type="submit" :disabled="disableBtn">Generovať</button>
+                    <button type="submit" :disabled="disableGenBtn"
+                        :class="(isRunning ? 'hidden' : '') + ' generateBtn'">Generovať</button>
                 </div>
             </form>
             <form @submit.prevent="closeProcess">
                 <div class="btn">
-                    <button type="submit">Zrušiť</button>
+                    <button type="submit" :disabled="disableCloseBtn" :class="(isRunning ? '' : 'hidden') + ' closeBtn'">{{
+                        disableCloseBtn ? 'Ukončujem..' : 'Ukončiť' }}</button>
                 </div>
             </form>
         </div>
@@ -72,7 +80,8 @@ export default {
         return {
             id: this.$route.params.id,
             showModal: false,
-            disableBtn: false,
+            disableGenBtn: false,
+            disableCloseBtn: true,
             isRunning: false,
 
             response_image: null,
@@ -146,8 +155,17 @@ export default {
 
 
         async sendData() {
+            if (!this.contentData.image || !this.styleData.image) {
+                alert("Nezvolili ste oba obrázky")
+                return
+            }
             try {
-                this.disableBtn = true;
+
+                this.disableCloseBtn = false;
+                this.disableGenBtn = true;
+                this.response_image = null
+
+
                 const response = await axios.post('../api/startProcess', {
                     id: this.id,
                     contentData: this.contentData.image,
@@ -160,7 +178,6 @@ export default {
 
                 //this.response = response.data;
                 console.log(response.data)
-                this.disableBtn = false;
 
                 this.isRunning = true;
 
@@ -171,7 +188,7 @@ export default {
                 else if (this.id == "msg-net-istucnn")
                     intervalTime = 1000;
                 else if (this.id == "istucnn-2")
-                    intervalTime = 1000;
+                    intervalTime = 5000;
                 else if (this.id == "nnst")
                     intervalTime = 1000;
 
@@ -182,7 +199,6 @@ export default {
             }
         },
         async checkProcess(intervalTime) {
-            console.log("Zacinam check")
             let intervalId = setInterval(async () => {
                 console.log("Checkujem")
                 try {
@@ -200,6 +216,8 @@ export default {
 
                     if (!res.isRunning) {
                         this.isRunning = false
+                        this.disableGenBtn = false;
+                        alert("Generovanie skončilo")
                         console.log("Process skoncil, koncim check")
                         clearInterval(intervalId);
                     }
@@ -210,9 +228,9 @@ export default {
                 }
             }, intervalTime);
 
-            console.log("koncim check")
         },
         async closeProcess() {
+            this.disableCloseBtn = true;
             try {
                 const response = await axios.post('../api/closeProcess', {}, {
                     headers: {
@@ -221,10 +239,10 @@ export default {
                 });
 
                 console.log(response.data);
-                this.isRunning = false;
 
             } catch (error) {
                 console.error(error);
+                this.disableCloseBtn = false;
             }
         }
     }
@@ -232,10 +250,11 @@ export default {
 </script>
   
 <style lang="scss">
-$color-primary: #2E3532;
-$color-secondary: #7E9181;
-$color-tertiary: #C7CEDB;
-$color-quaternary: #A0AAB2;
+$color1: #F5F5F5;
+$color2: #00A499;
+$color3: #1A1A1A;
+$color4: #E5E5E2;
+$color5: #1E2838;
 
 .modelPage {
     display: flex;
@@ -247,7 +266,7 @@ $color-quaternary: #A0AAB2;
         display: none;
         width: 70%;
         height: 14rem;
-        background: $color-secondary;
+        background: $color4;
         margin-bottom: 2rem;
     }
 
@@ -257,7 +276,7 @@ $color-quaternary: #A0AAB2;
         justify-content: space-evenly;
         align-items: center;
         flex-wrap: nowrap;
-        margin-bottom: 2rem;
+        margin-bottom: 3vh;
 
         .left {
             display: flex;
@@ -268,17 +287,23 @@ $color-quaternary: #A0AAB2;
 
             &>div {
                 display: flex;
+                flex-direction: column;
                 justify-content: center;
                 width: 100%;
-                height: 30vh;
                 overflow: hidden;
 
-
+                span {
+                    font-size: 3vh;
+                    color: $color3;
+                    margin-bottom: 1vh;
+                }
 
                 button {
+                    display: flex;
+                    align-items: center;
                     cursor: pointer;
-                    width: 100%;
-                    height: 100%;
+                    width: 48vh;
+                    height: 27vh;
                     background-color: transparent;
                     outline: none;
                     border: none;
@@ -286,12 +311,22 @@ $color-quaternary: #A0AAB2;
                     .no_image {
                         width: 100%;
                         height: 100%;
-                        background-color: $color-quaternary;
+                        background-color: $color2;
                         border-radius: 20px;
                         font-size: 2rem;
                         display: flex;
                         justify-content: center;
                         align-items: center;
+                        color: $color1;
+
+                        transition: 0.2s all ease;
+
+                        &:hover {
+                            transition: 0.2s all ease;
+                            font-size: 2.1rem;
+                            background-color: $color5;
+                        }
+
                     }
 
                     img {
@@ -299,11 +334,12 @@ $color-quaternary: #A0AAB2;
                         max-width: 100%;
                         max-height: 100%;
                         object-fit: contain;
+                        border: 5px solid $color1;
                     }
                 }
 
                 &:first-child {
-                    margin-bottom: 1rem;
+                    margin-bottom: 2vh;
                 }
 
 
@@ -313,30 +349,54 @@ $color-quaternary: #A0AAB2;
         .right {
             display: flex;
             justify-content: center;
-            align-items: center;
+            flex-direction: column;
             width: 50%;
 
-            &>div {
+            span {
+                font-size: 3vh;
+                color: $color3;
+                margin-bottom: 1vh;
+            }
+
+            .final_image {
                 display: flex;
                 justify-content: center;
-                width: 100%;
-                height: 60vh;
+                width: 96vh;
+                height: 54vh;
                 overflow: hidden;
+                position: relative;
+
+
+
+                .spinner {
+                    position: absolute;
+                    width: 150px;
+                    height: 150px;
+                    background-color: red;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+
+                    &.hidden {
+                        display: none;
+                    }
+                }
 
                 img {
                     min-height: 100%;
                     max-width: 100%;
                     max-height: 100%;
                     object-fit: contain;
+                    border: 5px solid $color1;
                 }
 
                 .no_response {
                     width: 100%;
-                    border: 1px solid $color-quaternary;
+                    border: 5px solid $color1;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    color: $color-quaternary;
+                    color: $color3;
                     font-size: 2rem;
                 }
             }
@@ -344,26 +404,40 @@ $color-quaternary: #A0AAB2;
 
     }
 
-    .btn {
-        button {
-            cursor: pointer;
-            color: $color-tertiary;
-            background-color: $color-secondary;
-            font-size: 2rem;
-            border-radius: .8rem;
-            width: 20rem;
-            height: 5rem;
-            transition: 0.2s all ease;
-            outline: 0rem solid $color-tertiary;
 
-            &:hover {
+    .buttons {
+        display: flex;
+
+        .btn {
+            button {
+                cursor: pointer;
+                color: $color4;
+                background-color: $color2;
+                font-size: 1.8rem;
+                border-radius: 0.8rem;
+                width: 18rem;
+                height: 5rem;
                 transition: 0.2s all ease;
-                outline: .2rem solid $color-tertiary;
+
+                &:hover {
+                    transition: 0.2s all ease;
+                    font-size: 1.85rem;
+                    background-color: $color5;
+                    color: $color1;
+                }
+
+                &.hidden {
+                    display: none;
+                }
             }
         }
+
+
+
+        .generateBtn {}
+
+        .closeBtn {}
     }
-
-
 
     //MODAL 
 
@@ -381,7 +455,7 @@ $color-quaternary: #A0AAB2;
 
         /* Modal content */
         .modal-content {
-            background-color: $color-tertiary;
+            background-color: $color3;
             padding: 1.5rem;
             border-radius: 5px;
 

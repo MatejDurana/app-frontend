@@ -9,33 +9,31 @@
 </template>
 
 <style lang="scss">
-$color-primary: #2e3532;
-$color-secondary: #7e9181;
-$color-tertiary: #c7cedb;
-$color-quaternary: #a0aab2;
+$color1: #F5F5F5;
+$color2: #00A499;
+$color3: #1A1A1A;
+$color4: #E5E5E2;
+$color5: #1E2838;
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: $color-primary;
+
+  background: rgb(229, 229, 226);
+  background: linear-gradient(0deg, rgba(229, 229, 226, 1) 0%, rgba(245, 245, 245, 1) 15%);
+
   padding: 1rem;
-  color: $color-tertiary;
+  color: $color3;
   font-size: 2rem;
   padding-inline: 4rem;
-  border-bottom: 2px solid $color-quaternary;
 }
 
 .logo {
   font-weight: bold;
   text-decoration: none;
-  color: $color-tertiary;
-  transition: color 0.3s;
 }
 
-.logo:hover {
-  color: $color-secondary;
-}
 
 .nav {
   display: flex;
@@ -46,11 +44,16 @@ $color-quaternary: #a0aab2;
 .nav-item {
   margin-left: 1rem;
   text-decoration: none;
-  color: $color-quaternary;
-  transition: color 0.3s;
 }
 
-.nav-item:hover {
-  color: $color-tertiary;
+.nav-item,
+.logo {
+  transition: color 0.3s;
+
+  color: $color5;
+
+  &:hover {
+    color: $color2;
+  }
 }
 </style>

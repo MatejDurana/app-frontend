@@ -14,10 +14,11 @@ export default {
 </script>
   
 <style lang="scss" scoped>
-$color-primary: #2e3532;
-$color-secondary: #7e9181;
-$color-tertiary: #c7cedb;
-$color-quaternary: #a0aab2;
+$color1: #F5F5F5;
+$color2: #00A499;
+$color3: #222020;
+$color4: #E5E5E2;
+$color5: #1E2838;
 
 .landing-page {
   position: relative;
@@ -27,27 +28,27 @@ $color-quaternary: #a0aab2;
   align-items: center;
 
   h1 {
-    color: $color-tertiary;
-    font-size: 3rem;
+    color: $color3;
+    font-size: 2.5rem;
     text-align: center;
     margin-bottom: 3rem;
   }
 
   button {
     cursor: pointer;
-    color: $color-tertiary;
-    background-color: $color-secondary;
+    color: $color4;
+    background-color: $color2;
     font-size: 1.8rem;
     border-radius: 0.8rem;
     width: 18rem;
     height: 5rem;
     transition: 0.2s all ease;
-    outline: 0rem solid $color-tertiary;
 
     &:hover {
       transition: 0.2s all ease;
-      outline: 0.2rem solid $color-tertiary;
-      font-size: 1.9rem;
+      font-size: 1.85rem;
+      background-color: $color5;
+      color: $color1;
     }
   }
 }
