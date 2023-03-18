@@ -27,9 +27,9 @@
             <div class="right">
                 <span>Výsledný obrázok</span>
                 <div class="final_image">
-                    <div :class="(this.isRunning ? '' : 'hidden') + ' spinner'">
-
-                    </div>
+                    <Loading :active="this.isRunning" loader="bars" color="#00A499" :can-cancel="false"
+                        :on-cancel="onCancel" :is-full-page="false" width="200px" height="200px">
+                    </Loading>
                     <img v-if="response_image" :src="response_image" alt="Image">
                     <div v-else class="no_response">
                         <h2>Výsledok nie je vygenerovaný</h2>
@@ -71,10 +71,15 @@
 import axios from 'axios';
 import CropModal from './CropModal.vue';
 
+import Loading from 'vue3-loading-overlay';
+import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
+
+
 export default {
     name: "ModelPage",
     components: {
-        CropModal
+        CropModal,
+        Loading
     },
     data() {
         return {
@@ -105,12 +110,13 @@ export default {
         console.log(this.id)
     },
     unmounted() {
-        console.log("JAKO")
         this.closeProcess()
     },
     methods: {
 
         openModal(type) {
+            if (this.isRunning)
+                return;
             this.type = type;
             if (this.type == "content") {
                 this.currImageData = this.contentData;
@@ -155,8 +161,20 @@ export default {
 
 
         async sendData() {
-            if (!this.contentData.image || !this.styleData.image) {
-                alert("Nezvolili ste oba obrázky")
+            if (!this.contentData.image) {
+                this.$toast('Zabudli ste vybrať obrátok obsahu', {
+                    duration: 3000,
+                    class: 'toast',
+                    type: 'error',
+                });
+                return
+            }
+            if (!this.styleData.image) {
+                this.$toast('Zabudli ste vybrať obrátok štýlu', {
+                    duration: 3000,
+                    class: 'toast',
+                    type: 'error',
+                });
                 return
             }
             try {
@@ -217,7 +235,14 @@ export default {
                     if (!res.isRunning) {
                         this.isRunning = false
                         this.disableGenBtn = false;
-                        alert("Generovanie skončilo")
+                        this.$toast('Generovanie skončilo', {
+                            duration: 3000,
+                            styles: {
+                                "background-color": "#00A499"
+                            },
+                            class: 'toast',
+                            type: 'success'
+                        });
                         console.log("Process skoncil, koncim check")
                         clearInterval(intervalId);
                     }
@@ -255,6 +280,10 @@ $color2: #00A499;
 $color3: #1A1A1A;
 $color4: #E5E5E2;
 $color5: #1E2838;
+
+.toast {
+    font-family: "Drive", sans-serif;
+}
 
 .modelPage {
     display: flex;
@@ -366,6 +395,10 @@ $color5: #1E2838;
                 overflow: hidden;
                 position: relative;
 
+                svg {
+                    position: relative;
+                    left: 7% !important;
+                }
 
 
                 .spinner {
@@ -378,7 +411,7 @@ $color5: #1E2838;
                     transform: translate(-50%, -50%);
 
                     &.hidden {
-                        display: none;
+                        //display: none;
                     }
                 }
 
@@ -455,7 +488,7 @@ $color5: #1E2838;
 
         /* Modal content */
         .modal-content {
-            background-color: $color3;
+            background-color: $color1;
             padding: 1.5rem;
             border-radius: 5px;
 

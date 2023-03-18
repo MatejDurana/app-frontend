@@ -42,29 +42,11 @@
                     <a href="#" role="button" @click.prevent="zoom(-0.2)">
                         Zoom Out
                     </a>
-                    <a href="#" role="button" @click.prevent="move(-10, 0)">
-                        Move Left
-                    </a>
-                    <a href="#" role="button" @click.prevent="move(10, 0)">
-                        Move Right
-                    </a>
-                    <a href="#" role="button" @click.prevent="move(0, -10)">
-                        Move Up
-                    </a>
-                    <a href="#" role="button" @click.prevent="move(0, 10)">
-                        Move Down
-                    </a>
                     <a href="#" role="button" @click.prevent="rotate(90)">
                         Rotate +90deg
                     </a>
                     <a href="#" role="button" @click.prevent="rotate(-90)">
                         Rotate -90deg
-                    </a>
-                    <a ref="flipX" href="#" role="button" @click.prevent="flipX">
-                        Flip X
-                    </a>
-                    <a ref="flipY" href="#" role="button" @click.prevent="flipY">
-                        Flip Y
                     </a>
 
                     <a href="#" role="button" @click.prevent="reset">
@@ -113,9 +95,9 @@ export default {
             ],
             styleImages: [
                 { src: 'night.jpg' },
-                { src: 'picasso.jpg' },
-                { src: 'gogh.jpg' },
-                { src: 'vykrik.jpg' },
+                { src: 'S1.jpg' },
+                { src: 'S2.jpg' },
+                { src: 'S3.jpg' },
             ],
 
             croppData: {
@@ -287,6 +269,14 @@ export default {
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+$color1: #F5F5F5;
+$color2: #00A499;
+$color3: #222020;
+$color4: #E5E5E2;
+$color5: #1E2838;
+
+
+
 input[type="file"] {
     display: none;
 }
@@ -311,15 +301,6 @@ input[type="file"] {
             img {
                 width: 150px;
             }
-        }
-
-        a {
-            display: inline-block;
-            padding: 5px 15px;
-            background: #0062CC;
-            color: white;
-            text-decoration: none;
-            border-radius: 3px;
         }
     }
 }
@@ -349,21 +330,32 @@ input[type="file"] {
     margin-top: 1rem;
 }
 
-.actions a {
+
+.actions a,
+.top .imagesSelect a {
     display: inline-block;
-    padding: 5px 15px;
-    background: #0062CC;
-    color: white;
+    padding: 5px 25px;
     text-decoration: none;
-    border-radius: 3px;
     margin-right: 1rem;
     margin-bottom: 1rem;
+
+    color: $color1;
+    background-color: $color2;
+    font-size: 1.1rem;
+    border-radius: 0.8rem;
+    transition: 0.2s all ease;
+
+    &:hover {
+        transition: 0.2s all ease;
+        background-color: $color5;
+        color: $color1;
+    }
 }
 
-textarea {
-    width: 100%;
-    height: 100px;
+.top .imagesSelect a {
+    margin: 0;
 }
+
 
 .preview-area {
     width: 30%;
@@ -383,15 +375,5 @@ textarea {
     width: 100%;
     height: calc(372px * (9 / 16));
     overflow: hidden;
-}
-
-.crop-placeholder {
-    width: 100%;
-    height: 200px;
-    background: #ccc;
-}
-
-.cropped-image img {
-    max-width: 100%;
 }
 </style>

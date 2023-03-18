@@ -6,6 +6,10 @@ import ModelPage from './components/ModelPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 
+import DKToast from 'vue-dk-toast';
+
+
+
 const routes = [
   {
     path: '/',
@@ -29,4 +33,5 @@ const router = createRouter({
   routes
 })
 
-createApp(App).use(router).mount('#app')
+
+createApp(App).use(router).use(DKToast).mount('#app')
