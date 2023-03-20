@@ -1,5 +1,6 @@
 <template>
     <div class="models">
+        <span>Výber modelu</span>
         <div class="box-container">
             <ModelCard :model="models[0]" />
             <ModelCard :model="models[1]" />
@@ -59,8 +60,14 @@ $color5: #1E2838;
 .models {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+
+    &>span {
+        margin-top: 4vh;
+        font-size: 3vh;
+        margin-bottom: 3vh;
+    }
 
     .box-container {
         width: 100%;

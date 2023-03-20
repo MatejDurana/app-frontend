@@ -107,7 +107,7 @@ export default {
         }
     },
     created() {
-        console.log(this.id)
+        //console.log(this.id)
     },
     unmounted() {
         this.closeProcess()
@@ -302,7 +302,7 @@ $color5: #1E2838;
     .images {
         width: 100%;
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-around;
         align-items: center;
         flex-wrap: nowrap;
         margin-bottom: 3vh;
@@ -313,6 +313,7 @@ $color5: #1E2838;
             justify-content: center;
             align-items: center;
             width: 30%;
+            margin-left: 10%;
 
             &>div {
                 display: flex;
@@ -331,8 +332,8 @@ $color5: #1E2838;
                     display: flex;
                     align-items: center;
                     cursor: pointer;
-                    width: 48vh;
-                    height: 27vh;
+                    width: 25vw;
+                    height: 14.0625vw;
                     background-color: transparent;
                     outline: none;
                     border: none;
@@ -342,7 +343,7 @@ $color5: #1E2838;
                         height: 100%;
                         background-color: $color2;
                         border-radius: 20px;
-                        font-size: 2rem;
+                        font-size: 1.5rem;
                         display: flex;
                         justify-content: center;
                         align-items: center;
@@ -352,7 +353,7 @@ $color5: #1E2838;
 
                         &:hover {
                             transition: 0.2s all ease;
-                            font-size: 2.1rem;
+                            font-size: 1.6rem;
                             background-color: $color5;
                         }
 
@@ -390,8 +391,8 @@ $color5: #1E2838;
             .final_image {
                 display: flex;
                 justify-content: center;
-                width: 96vh;
-                height: 54vh;
+                width: 40vw;
+                height: 22.5vw;
                 overflow: hidden;
                 position: relative;
 
@@ -430,7 +431,7 @@ $color5: #1E2838;
                     justify-content: center;
                     align-items: center;
                     color: $color3;
-                    font-size: 2rem;
+                    font-size: 1.5rem;
                 }
             }
         }
@@ -492,9 +493,8 @@ $color5: #1E2838;
             padding: 1.5rem;
             border-radius: 5px;
 
-            max-height: 800px;
-            width: 65%;
-            height: 85%;
+            max-height: 90vh;
+            width: 70vw;
             box-sizing: border-box;
             overflow-y: auto;
             overflow-x: hidden;

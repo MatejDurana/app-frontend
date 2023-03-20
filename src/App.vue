@@ -48,7 +48,7 @@ html {
   padding-top: 1rem;
   height: 90vh;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 
 body {
@@ -81,5 +81,11 @@ textarea {
 a {
   text-decoration: none;
 
+}
+
+@media only screen and (max-width: 1440px) {
+  html {
+    font-size: 14px;
+  }
 }
 </style>

@@ -24,29 +24,35 @@
                         :center=false :viewMode=2 :background=false :autoCropArea=0.9 />
                 </div>
                 <div class="actions">
-                    <a href="#" role="button" @click.prevent="sendImage">
-                        Potvrdiť
-                    </a>
-                    <br>
-                    <br>
-
                     <a href="#" role="button" @click.prevent="setCrop()">
-                        +
+                        <svg :width="iconSize" :height="iconSize">
+                            <image xlink:href="/icons/select.svg" :width="iconSize" :height="iconSize" />
+                        </svg>
                     </a>
                     <a href="#" role="button" @click.prevent="setMove()">
-                        X
+                        <svg :width="iconSize" :height="iconSize">
+                            <image xlink:href="/icons/move.svg" :width="iconSize" :height="iconSize" />
+                        </svg>
                     </a>
                     <a href="#" role="button" @click.prevent="zoom(0.2)">
-                        Zoom In
+                        <svg :width="iconSize" :height="iconSize">
+                            <image xlink:href="/icons/zoom_in.svg" :width="iconSize" :height="iconSize" />
+                        </svg>
                     </a>
                     <a href="#" role="button" @click.prevent="zoom(-0.2)">
-                        Zoom Out
-                    </a>
-                    <a href="#" role="button" @click.prevent="rotate(90)">
-                        Rotate +90deg
+                        <svg :width="iconSize" :height="iconSize">
+                            <image xlink:href="/icons/zoom_out.svg" :width="iconSize" :height="iconSize" />
+                        </svg>
                     </a>
                     <a href="#" role="button" @click.prevent="rotate(-90)">
-                        Rotate -90deg
+                        <svg :width="iconSize" :height="iconSize">
+                            <image xlink:href="/icons/rotate_left.svg" :width="iconSize" :height="iconSize" />
+                        </svg>
+                    </a>
+                    <a href="#" role="button" @click.prevent="rotate(90)">
+                        <svg :width="iconSize" :height="iconSize">
+                            <image xlink:href="/icons/rotate_right.svg" :width="iconSize" :height="iconSize" />
+                        </svg>
                     </a>
 
                     <a href="#" role="button" @click.prevent="reset">
@@ -59,6 +65,9 @@
             <section class="preview-area">
                 <p>Ukážka</p>
                 <div class="preview" />
+                <a href="#" role="button" @click.prevent="sendImage">
+                    Potvrdiť
+                </a>
             </section>
         </div>
     </div>
@@ -87,6 +96,7 @@ export default {
     },
     data() {
         return {
+            iconSize: 20,
             contentImages: [
                 { src: 'dog.jpg' },
                 { src: 'einstein.jpeg' },
@@ -293,15 +303,19 @@ input[type="file"] {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: 1rem;
+        gap: .5rem;
 
-        &>div {
+        .imageDiv {
             cursor: pointer;
+            width: 100px;
 
             img {
-                width: 150px;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
             }
         }
+
     }
 }
 
@@ -326,22 +340,19 @@ input[type="file"] {
     }
 }
 
-.actions {
-    margin-top: 1rem;
-}
+
 
 
 .actions a,
-.top .imagesSelect a {
+.top .imagesSelect a,
+.preview-area a {
     display: inline-block;
     padding: 5px 25px;
     text-decoration: none;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
 
     color: $color1;
     background-color: $color2;
-    font-size: 1.1rem;
+    font-size: 1.1vw;
     border-radius: 0.8rem;
     transition: 0.2s all ease;
 
@@ -352,13 +363,41 @@ input[type="file"] {
     }
 }
 
+
+.actions {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .7vw;
+    margin-bottom: 1rem;
+
+    a {
+        padding: .5rem;
+        display: inline-flex;
+
+        svg {
+            display: block;
+        }
+    }
+}
+
 .top .imagesSelect a {
-    margin: 0;
+    font-size: 1rem;
 }
 
 
+
 .preview-area {
+    display: flex;
+    flex-direction: column;
     width: 30%;
+
+    a {
+        margin-top: 1rem;
+        text-align: center;
+
+    }
 }
 
 .preview-area p {
