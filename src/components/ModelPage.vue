@@ -1,8 +1,12 @@
 <template>
     <div class="modelPage">
-
-
-        <div class="params"></div>
+        <div :class="['params', isParamsShown ? 'shown' : '']" ref="params">
+            <div class="content">
+                <div class="btn" @click="this.isParamsShown = !this.isParamsShown">
+                    <span>Parametre</span>
+                </div>
+            </div>
+        </div>
         <div class="images">
             <div class="left">
                 <div class="content_image">
@@ -28,7 +32,7 @@
                 <span>Výsledný obrázok</span>
                 <div class="final_image">
                     <Loading :active="this.isRunning" loader="bars" color="#00A499" :can-cancel="false"
-                        :on-cancel="onCancel" :is-full-page="false" width="200px" height="200px">
+                        :is-full-page="false" :width=200 :height=200>
                     </Loading>
                     <img v-if="response_image" :src="response_image" alt="Image">
                     <div v-else class="no_response">
@@ -42,12 +46,12 @@
             <form @submit.prevent="sendData">
                 <div class="btn">
                     <button type="submit" :disabled="disableGenBtn"
-                        :class="(isRunning ? 'hidden' : '') + ' generateBtn'">Generovať</button>
+                        :class="[isRunning ? 'hidden' : '', ' generateBtn']">Generovať</button>
                 </div>
             </form>
             <form @submit.prevent="closeProcess">
                 <div class="btn">
-                    <button type="submit" :disabled="disableCloseBtn" :class="(isRunning ? '' : 'hidden') + ' closeBtn'">{{
+                    <button type="submit" :disabled="disableCloseBtn" :class="[isRunning ? '' : 'hidden', ' closeBtn']">{{
                         disableCloseBtn ? 'Ukončujem..' : 'Ukončiť' }}</button>
                 </div>
             </form>
@@ -103,16 +107,68 @@ export default {
                 cropBoxData: null,
                 imageData: null,
             },
-            currImageData: {}
+            currImageData: {},
+
+            isParamsShown: false,
+            params: ''
         }
     },
     created() {
         //console.log(this.id)
+
+        //asanoa
+        // p.add_argument('--init', **arg_info('init'),
+        //            choices=['content', 'gray', 'uniform', 'style_mean'],
+        // p.add_argument('--pooling', type=str, default='max', choices=['max', 'average', 'l2'],
+        // help='the model\'s pooling mode')
+        // p.add_argument('--step-size', '-ss', **arg_info('step_size'),
+        //            help='the step size (learning rate)')
+        // p.add_argument('--initial-iterations', '-ii', **arg_info('initial_iterations'),
+        // help='the number of iterations on the first scale')
+        // p.add_argument('--random-seed', '-r', type=int, default=0,
+        //            help='the random seed')
+        // p.add_argument('--content-weight', '-cw', **arg_info('content_weight'),
+        //             help='the content weight')
+        // p.add_argument('--tv-weight', '-tw', **arg_info('tv_weight'),
+        //            help='the smoothing weight')
+        // p.add_argument('--style-weights', '-sw', type=float, nargs='+', default=None,
+        // metavar='STYLE_WEIGHT', help='the relative weights for each style image')
+
+
+        //gordic
+        // parser.add_argument("--content_weight", type=float,
+        //                 help="weight factor for content loss", default=1e5)
+        // parser.add_argument("--style_weight", type=float,
+        //                     help="weight factor for style loss", default=3e4)
+        // parser.add_argument("--tv_weight", type=float,
+        //                     help="weight factor for total variation loss", default=1e0)
+
+        // parser.add_argument("--optimizer", type=str,
+        //                     choices=['lbfgs', 'adam'], default='lbfgs')
+        // parser.add_argument("--model", type=str,
+        //                     choices=['vgg16', 'vgg19'], default='vgg19')
+        // parser.add_argument("--init_method", type=str,
+        //                     choices=['random', 'content', 'style'], default='content')
+
+
+        this.params = '--init_method random --content_weight 1000 --style_weight 30 --tv_weight 0.1'
     },
-    unmounted() {
+    mounted() {
+        document.addEventListener('click', this.handleClickOutside)
+    },
+    beforeUnmount() {
+        document.removeEventListener('click', this.handleClickOutside)
         this.closeProcess()
     },
     methods: {
+
+        handleClickOutside(event) {
+            if (this.isParamsShown) {
+                if (!this.$refs.params.contains(event.target)) {
+                    this.isParamsShown = false
+                }
+            }
+        },
 
         openModal(type) {
             if (this.isRunning)
@@ -188,6 +244,7 @@ export default {
                     id: this.id,
                     contentData: this.contentData.image,
                     styleData: this.styleData.image,
+                    params: this.params
                 }, {
                     headers: {
                         'Content-Type': 'application/json'
@@ -201,14 +258,14 @@ export default {
 
                 let intervalTime = 1000;
 
-                if (this.id == "anaoas")
-                    intervalTime = 5000;
-                else if (this.id == "msg-net-istucnn")
-                    intervalTime = 1000;
-                else if (this.id == "istucnn-2")
-                    intervalTime = 5000;
-                else if (this.id == "nnst")
-                    intervalTime = 1000;
+                // if (this.id == "anaoas")
+                //     intervalTime = 1000;
+                // else if (this.id == "msg-net-istucnn")
+                //     intervalTime = 1000;
+                // else if (this.id == "istucnn-2")
+                //     intervalTime = 5000;
+                // else if (this.id == "nnst")
+                //     intervalTime = 1000;
 
                 this.checkProcess(intervalTime);
 
@@ -290,13 +347,51 @@ $color5: #1E2838;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    position: relative;
 
     .params {
-        display: none;
+        position: absolute;
         width: 70%;
         height: 14rem;
-        background: $color4;
-        margin-bottom: 2rem;
+        background: $color1;
+        z-index: 50;
+
+        transition: all 0.5s ease-in-out;
+        top: -14rem;
+        border-radius: 20px;
+
+        &.shown {
+            transition: all 0.5s ease-in-out;
+            top: 1rem;
+        }
+
+        .content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+
+            .btn {
+                border-radius: 20px;
+                cursor: pointer;
+                position: absolute;
+                bottom: -3rem;
+                left: 50%;
+                transform: translateX(-50%);
+
+                width: 20%;
+                height: 3.4rem;
+                background-color: $color2;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                span {
+                    color: $color1;
+                    font-size: 1.4rem;
+                }
+            }
+        }
     }
 
     .images {
@@ -480,7 +575,7 @@ $color5: #1E2838;
         justify-content: center;
         align-items: center;
         position: fixed;
-        z-index: 1;
+        z-index: 100;
         left: 0;
         top: 0;
         height: 100%;

@@ -20,8 +20,8 @@ $color5: #1E2838;
   justify-content: space-between;
   align-items: center;
 
-  background: rgb(229, 229, 226);
-  background: linear-gradient(0deg, rgba(229, 229, 226, 1) 0%, rgba(245, 245, 245, 1) 15%);
+  background: rgba(245, 245, 245, 1);
+  //background: linear-gradient(0deg, rgba(229, 229, 226, 1) 0%, rgba(245, 245, 245, 1) 15%);
 
   padding: 1rem;
   color: $color3;
