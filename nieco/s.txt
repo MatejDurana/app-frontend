@@ -1,0 +1,163 @@
+Appka bude na všetko okrem gsruma a titu
+
+ls /usr/bin/python*
+
+
+nvidia-smi
+sudo apt install nvidia-driver-515 nvidia-dkms-515
+
+ssh dur0133@srvfeia0be.vsb.cz
+
+crowsonkb - funguje cez príkaz v ntb
+ 	  - aj local 
+	  cd bakalarka/crowsonkb_style-transfer-pytorch-master
+	  source crowsonkb_env/bin/activate
+	  style_transfer ../crowsonkb_images/einstein.jpeg ../crowsonkb_images/gogh.jpg  -ms 512 -s 512  -ii 1000 -o ../crowsonkb_images/output.jpg
+
+
+	  CAS - áno	  		
+
+
+nkolkin13 - ide na stránke https://replicate.com/nkolkin13/neuralneighborstyletransfer , možnosť API, moc som nepozeral
+	  - local - env je v pip v nom
+	  
+	  ssh dur0133@srvfeia0be.vsb.cz
+	  
+	  cd bakalarka/nkolkin_NeuralNeighborStyleTransfer/
+	  source nkolkin_env/bin/activate
+
+	  python3.10 styleTransfer.py --content_path inputs/einstein.jpeg --style_path inputs/gogh.jpg --output_path ./outputs/output.jpg --dont_colorize
+	  
+	  -50s cca
+	  
+	  na local:
+	  scp dur0133@srvfeia0be.vsb.cz:./bakalarka/nkolkin_NeuralNeighborStyleTransfer/output.jpg ./bakalarka/nkolkin_NeuralNeighborStyleTransfer/outputs
+
+	
+   	  CAS - áno
+
+
+	
+	
+gordicaleksa - env je v conde
+		aj v venv
+		
+		
+		source py_env/venv/bin/activate
+		conda activate gordicaleksa
+		
+		- ide, zacina na velkych loss hodnotach	
+		-trvalo to asi hodinu na 1000 iteracii a mám jeden obrázok	
+		
+		obrazky musia byt v data/content alebo /style 
+		python neural_style_transfer.py --content_img_name einstein.jpeg --style_img_name vykrik.jpg 
+
+		python neural_style_transfer.py --content_img_name einstein.jpeg --style_img_name vykrik.jpg --height 315		
+		python neural_style_transfer.py --content_img_name einstein.jpeg --style_img_name picasso.jpg --height 315
+		
+		python neural_style_transfer.py --content_img_name town.jpeg --style_img_name vykrik.jpg --height 306
+		python neural_style_transfer.py --content_img_name town.jpeg --style_img_name picasso.jpg --height 306
+
+		
+		
+		71min - vykrik
+		
+		na cude - 5m 31s
+		
+		CAS - ANo
+
+zhanghang - nepasuju requirments, zle verzie, nejdu medzi sebou nainstalovat
+	    nainstalovat lepsi python 3.7 a vyssie
+	    env je v bakalarka/zhanghang_ENV
+	    cd bakalarka/zhanghang_P
+	    cd zhang
+	    source env/bin/activate
+	    
+	    cd experiments
+	    
+	    tu pouzivam python3.7 prikazy
+	    v requirements som zmenil 
+	    	opencv_python==4.2.0.32 na opencv_python==4.5.1.48
+	    	torch==1.5.0 na torch==1.8.0
+	    	torchvision==0.6.0 na torchvision==0.8.2
+	    
+	    
+	    
+	    python main.py eval --content-image myImages/einstein.jpeg --style-image myImages/gogh.jpg --output-image myImages/output.jpg  --model models/21styles.model --content-size 1024 --cuda=0
+	    python camera_demo.py demo --model models/21styles.model
+	    
+	  
+	    CAS - áno
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+gsurma - colab notebook
+         nejde mi preposledny kod, pridal som nejaku verziu tensorflow aby mi siel gradient
+	 loss vychadza miliardovy, pocita sa aj 8 minut 
+	 vyskusat cez noc co sa stane    		
+	 vyše hodinu 10 iteraci
+	 - local je v anaconde ako notebook -  staci base env
+	 spustat notebook MOJ
+	 
+	 CAS -- áno
+	 
+	 
+	 
+
+titu - env je v conde
+     -appka v C#
+     - command line - zmenil som ordering na common.ordering a ide, ale asi to dlho trva
+     spojazdnit iba command line,
+	 zmenit keras ako v grusma ntb alebo niekde co som menil , cize tensorflow.keras
+	 ak tak nainstalovat lepsiu verziu keras, pozriet requirmenst
+	keras ide  ked zmenim na common ordering	
+	jedna iteracia trva okolo 200s
+	
+	env je v conde
+	
+	conda activate titu1994
+	
+	python3.7 Network.py "/home/edering/bakalarka/titu1994_Neural-Style-Transfer/images/test/einstein.jpeg" "/home/edering/bakalarka/titu1994_Neural-Style-Transfer/images/test/vykrik.jpg" "/home/edering/bakalarka/titu1994_Neural-Style-Transfer/images/test/output.jpg" --image_size 400 --content_weight 0.025 --style_weight 1.0 --total_variation_weight 8.5E-05 --style_scale 1 --num_iter 10 --rescale_image "False" --rescale_method "bicubic" --maintain_aspect_ratio "True" --content_layer "conv5_2" --init_image "content" --pool_type "max" --preserve_color "False" --min_improvement 0 --model "vgg16" --content_loss_type 0
+	
+	ak tak updatovat drivere na cude
+
+	python3.7 Network.py "/home/edering/bakalarka/titu1994_Neural-Style-Transfer/images/test/einstein.jpeg" "/home/edering/bakalarka/test_images/vykrik.jpg" "/home/edering/bakalarka/titu1994_Neural-Style-Transfer/images/test/output.jpg_at_iteration_2.png" --image_size 512 --content_weight 0.025 --style_weight 1.0 --total_variation_weight 8.5E-05 --style_scale 1 --num_iter 10 --rescale_image "True" --rescale_method "bicubic" --maintain_aspect_ratio "True" --content_layer "conv5_2" --init_image "content" --pool_type "max" --preserve_color "False" --min_improvement 0 --model "vgg16" --content_loss_type 0
+
+	
+     CAS - ANO
+     
+     1.  37m 7s	
+	 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+	 
+sunshineatnoon : 	 
+	Yijunmaverick - th command not found, lua mam nainstalovane 
+
+	eridgd - open CV instalacia - zatial som nerobil
+
+xunhuang1995, rtqichen, chuanli11 - lua , th problem, neskusal som
+	 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+leangatys - ntb, tiez nejde predpred posledny riadok,
+	 treba nahrat ale do models vgg_conv.pth     
+	 a do Images obrazky
+	 nerobit	 
+	 
+luanfujun - je v lua, depencencies sú matlab alebo octave
+	nerobit
+
+
+
+
+
