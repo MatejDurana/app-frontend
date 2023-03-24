@@ -21,6 +21,12 @@ export default {
         return {
             models: [
                 {
+                    id: "nnst",
+                    name: "NNST",
+                    fullname: "Neural Neighbor Style Transfer",
+                    time: "45 sekúnd"
+                },
+                {
                     id: "anaoas",
                     name: "ANAoAS",
                     fullname: "A Neural Algorithm of Artistic Style",
@@ -30,19 +36,13 @@ export default {
                     id: "msg-net-istucnn",
                     name: "MSG-Net-ISTUCNN",
                     fullname: "Multi-style Generative Network - Image Style Transfer Using CNNs",
-                    time: "2 minúty"
+                    time: "5 sekúnd"
                 },
                 {
                     id: "istucnn-2",
                     name: "ISTUCNN 2",
                     fullname: "Image Style Transfer Using CNNs",
-                    time: "2 minúty"
-                },
-                {
-                    id: "nnst",
-                    name: "NNST",
-                    fullname: "Neural Neighbor Style Transfer",
-                    time: "2 minúty"
+                    time: "3 minúty"
                 }
             ]
         }

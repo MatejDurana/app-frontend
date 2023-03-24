@@ -30,9 +30,9 @@
             </div>
             <div class="right">
                 <span>Výsledný obrázok</span>
-                <div class="final_image">
-                    <Loading :active="this.isRunning" loader="bars" color="#00A499" :can-cancel="false"
-                        :is-full-page="false" :width=200 :height=200>
+                <div class="final_image" @mouseenter="this.notHovering = false" @mouseleave="this.notHovering = true">
+                    <Loading :active="this.isRunning && this.notHovering" loader="bars" color="#00A499" :can-cancel="false"
+                        :is-full-page="false" :width=200 :height=200 :z-index=25>
                     </Loading>
                     <img v-if="response_image" :src="response_image" alt="Image">
                     <div v-else class="no_response">
@@ -92,6 +92,7 @@ export default {
             disableGenBtn: false,
             disableCloseBtn: true,
             isRunning: false,
+            notHovering: true,
 
             response_image: null,
             type: null,
@@ -151,7 +152,8 @@ export default {
         //                     choices=['random', 'content', 'style'], default='content')
 
 
-        this.params = '--init_method random --content_weight 1000 --style_weight 30 --tv_weight 0.1'
+        //this.params = '--init_method random --content_weight 1000 --style_weight 30 --tv_weight 0.1'
+        this.params = ''
     },
     mounted() {
         document.addEventListener('click', this.handleClickOutside)
