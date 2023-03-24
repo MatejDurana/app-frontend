@@ -240,7 +240,7 @@ export default {
                 this.response_image = null
 
 
-                const response = await axios.post('../api/startProcess', {
+                const response = await axios.post('http://158.196.145.23:10000/startProcess', {
                     id: this.id,
                     contentData: this.contentData.image,
                     styleData: this.styleData.image,
@@ -277,7 +277,7 @@ export default {
             let intervalId = setInterval(async () => {
                 console.log("Checkujem")
                 try {
-                    const response = await axios.post('../api/checkProcess', {}, {
+                    const response = await axios.post('http://158.196.145.23:10000/checkProcess', {}, {
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -314,7 +314,7 @@ export default {
         async closeProcess() {
             this.disableCloseBtn = true;
             try {
-                const response = await axios.post('../api/closeProcess', {}, {
+                const response = await axios.post('http://158.196.145.23:10000/closeProcess', {}, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
