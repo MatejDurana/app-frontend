@@ -1,7 +1,14 @@
 <template>
     <div class="modelPage">
-        <div :class="['params', isParamsShown ? 'shown' : '']" ref="params">
+        <div :class="['params', isParamsShown ? 'shown' : '']" ref="params" v-if="this.id != 'msg-net-istucnn'">
             <div class="content">
+                <div class="inner">
+                    <button @click="submitForm">Submit</button>
+                    <paramsNkolkin v-if="this.id == 'nnst'" @paramsData="handleparamsData" />
+                    <paramsGordic v-if="this.id == 'istucnn-2'" @paramsData="handleparamsData" />
+                    <paramsCrowson v-if="this.id == 'anaoas'" @paramsData="handleparamsData" />
+                </div>
+
                 <div class="btn" @click="this.isParamsShown = !this.isParamsShown">
                     <span>Parametre</span>
                 </div>
@@ -78,15 +85,25 @@ import CropModal from './CropModal.vue';
 import Loading from 'vue3-loading-overlay';
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 
+import paramsNkolkin from './params/Nkolkin.vue';
+import paramsGordic from './params/Gordic.vue';
+import paramsCrowson from './params/Crowson.vue';
+
 
 export default {
     name: "ModelPage",
     components: {
         CropModal,
-        Loading
+        Loading,
+
+        paramsNkolkin,
+        paramsGordic,
+        paramsCrowson,
     },
     data() {
         return {
+            paramsData: {},
+
             id: this.$route.params.id,
             showModal: false,
             disableGenBtn: false,
@@ -153,7 +170,12 @@ export default {
 
 
         //this.params = '--init_method random --content_weight 1000 --style_weight 30 --tv_weight 0.1'
-        this.params = ''
+
+
+        // parser.add_argument('--content_loss'   , action='store_true'                  )
+        // parser.add_argument('--dont_colorize'  , action='store_true'                  )
+        // parser.add_argument('--alpha'          , type=float, default=0.75             )
+
     },
     mounted() {
         document.addEventListener('click', this.handleClickOutside)
@@ -163,6 +185,14 @@ export default {
         this.closeProcess()
     },
     methods: {
+        handleparamsData(paramsData) {
+            this.paramsData = paramsData;
+        },
+        submitForm() {
+            console.log(this.paramsData);
+            let formDataString = Object.values(this.paramsData).join(' ');
+            console.log(formDataString);
+        },
 
         handleClickOutside(event) {
             if (this.isParamsShown) {
@@ -235,12 +265,15 @@ export default {
                 });
                 return
             }
+
+            this.params = Object.values(this.paramsData).join(' ');
+            await this.$nextTick();
+            console.log(this.params)
             try {
 
                 this.disableCloseBtn = false;
                 this.disableGenBtn = true;
-                this.response_image = null
-
+                this.response_image = null;
 
                 const response = await axios.post('http://158.196.145.23:10000/startProcess', {
                     id: this.id,
@@ -371,6 +404,12 @@ $color5: #1E2838;
             position: relative;
             width: 100%;
             height: 100%;
+
+            .inner {
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
 
             .btn {
                 border-radius: 20px;
