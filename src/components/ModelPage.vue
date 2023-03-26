@@ -3,12 +3,11 @@
         <div :class="['params', isParamsShown ? 'shown' : '']" ref="params" v-if="this.id != 'msg-net-istucnn'">
             <div class="content">
                 <div class="inner">
-                    <button @click="submitForm">Submit</button>
                     <paramsNkolkin v-if="this.id == 'nnst'" @paramsData="handleparamsData" />
                     <paramsGordic v-if="this.id == 'istucnn-2'" @paramsData="handleparamsData" />
                     <paramsCrowson v-if="this.id == 'anaoas'" @paramsData="handleparamsData" />
                 </div>
-
+                <span class="warn">Zmena parametrov môže ovplyvniť čas generovania výsledného obrázku</span>
                 <div class="btn" @click="this.isParamsShown = !this.isParamsShown">
                     <span>Parametre</span>
                 </div>
@@ -172,10 +171,6 @@ export default {
         //this.params = '--init_method random --content_weight 1000 --style_weight 30 --tv_weight 0.1'
 
 
-        // parser.add_argument('--content_loss'   , action='store_true'                  )
-        // parser.add_argument('--dont_colorize'  , action='store_true'                  )
-        // parser.add_argument('--alpha'          , type=float, default=0.75             )
-
     },
     mounted() {
         document.addEventListener('click', this.handleClickOutside)
@@ -188,11 +183,7 @@ export default {
         handleparamsData(paramsData) {
             this.paramsData = paramsData;
         },
-        submitForm() {
-            console.log(this.paramsData);
-            let formDataString = Object.values(this.paramsData).join(' ');
-            console.log(formDataString);
-        },
+
 
         handleClickOutside(event) {
             if (this.isParamsShown) {
@@ -409,6 +400,16 @@ $color5: #1E2838;
                 position: relative;
                 width: 100%;
                 height: 100%;
+                padding: 2rem;
+            }
+
+            .warn {
+                display: block;
+                position: absolute;
+                bottom: 1.5rem;
+                left: 50%;
+                transform: translateX(-50%);
+                color: $color3;
             }
 
             .btn {

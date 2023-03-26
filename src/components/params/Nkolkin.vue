@@ -1,35 +1,65 @@
 <template>
     <form class="form-wrapper" @submit.prevent>
-        <div class="form-group">
-            <label for="alpha-input" class="form-label">
-                Alpha value:
-                <input type="range" id="alpha-input" min="0" max="1" step="0.01" v-model="form.alpha" class="form-input" />
-                <span>{{ form.alpha }}</span>
-            </label>
+        <div class="col">
+            <div :class="[hovered4 ? 'hovered' : '', 'inpt alpha']">
+                <label for="alpha-input" class="form-label">
+                    <div>
+                        Alpha:
+                        <span>{{ form.alpha }}</span>
+                        <toolTip
+                            message="Alpha=1,0 zodpovedá maximálnemu zachovaniu obsahu, Alpha=0,0 je maximálna štylizácia"
+                            @tooltip-hovered="tooltipHoveredHandler4" />
+                    </div>
+                    <div>
+                        <input type="range" id="alpha-input" min="0" max="1" step="0.01" v-model="form.alpha"
+                            class="form-input" />
+                    </div>
+                </label>
+
+            </div>
+        </div>
+        <div class="col">
+            <div :class="[hovered1 ? 'hovered' : '', 'inpt']">
+                <label class="b-contain">
+                    <span>No flip</span>
+                    <input type="checkbox" v-model="form.flip" />
+                    <div class="b-input"></div>
+                </label>
+                <toolTip
+                    message="Zakliknuté použije aj rotácie štýlu, čo zlepší viditeľnosť obsahu, ale môže zhoršiť prenesenie štýlu"
+                    @tooltip-hovered="tooltipHoveredHandler1" />
+            </div>
+            <div :class="[hovered2 ? 'hovered' : '', 'inpt']">
+                <label class="b-contain">
+                    <span>Dont colorize</span>
+                    <input type="checkbox" v-model="form.dont_colorize" />
+                    <div class="b-input"></div>
+                </label>
+                <toolTip message="Zakliknuté použije iba farby zo štýlu" @tooltip-hovered="tooltipHoveredHandler2" />
+            </div>
+            <div :class="[hovered3 ? 'hovered' : '', 'inpt']">
+                <label class="b-contain">
+                    <span>Content loss</span>
+                    <input type="checkbox" v-model="form.content_loss" />
+                    <div class="b-input"></div>
+                </label>
+                <toolTip
+                    message="Zakliknuté môže opraviť nesprávne posunutie farieb, ale má svoje nevýhody, preto je defaultne nezakliknutý"
+                    @tooltip-hovered="tooltipHoveredHandler3" />
+            </div>
         </div>
 
-        <label class="b-contain">
-            <span>Dont colorize</span>
-            <input type="checkbox" v-model="form.dont_colorize" />
-            <div class="b-input"></div>
-        </label>
-        <label class="b-contain">
-            <span>Content loss</span>
-            <input type="checkbox" v-model="form.content_loss" />
-            <div class="b-input"></div>
-        </label>
-        <label class="b-contain">
-            <span>No flip</span>
-            <input type="checkbox" v-model="form.flip" />
-            <div class="b-input"></div>
-        </label>
 
     </form>
 </template>
   
 <script>
+import toolTip from './ToolTip.vue';
 export default {
     name: "paramsNkolkin",
+    components: {
+        toolTip,
+    },
     data() {
         return {
             form: {
@@ -37,12 +67,28 @@ export default {
                 dont_colorize: true,
             },
             paramsData: {},
+            hovered1: false,
+            hovered2: false,
+            hovered3: false,
+            hovered4: false,
         }
     },
     methods: {
         handleSubmit() {
             this.$emit('paramsData', this.paramsData);
-        }
+        },
+        tooltipHoveredHandler1(value) {
+            this.hovered1 = value;
+        },
+        tooltipHoveredHandler2(value) {
+            this.hovered2 = value;
+        },
+        tooltipHoveredHandler3(value) {
+            this.hovered3 = value;
+        },
+        tooltipHoveredHandler4(value) {
+            this.hovered4 = value;
+        },
     },
     watch: {
         form: {
@@ -59,7 +105,43 @@ export default {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+.form-wrapper {
+    display: flex;
+    gap: 10rem;
+}
+
+.inpt {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+    z-index: 10;
+
+    &.hovered {
+        z-index: 50;
+    }
+}
+
+.alpha {
+    label {
+        display: flex;
+        flex-direction: column;
+
+        div:first-child {
+            display: flex;
+            gap: 1rem;
+            line-height: 1.5rem;
+
+            span {
+                background-color: #E5E5E2;
+                padding: 2px;
+                border-radius: 5px;
+            }
+        }
+    }
+}
+
+
 /*********** Baseline, reset styles ***********/
 input[type="range"] {
     -webkit-appearance: none;
