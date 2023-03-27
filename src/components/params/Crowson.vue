@@ -1,69 +1,167 @@
 <template>
     <form class="form-wrapper" @submit.prevent>
-        <div class="form-group">
-            <label for="alpha-input" class="form-label">
-                Alpha value:
-                <input type="range" id="alpha-input" min="0" max="1" step="0.01" v-model="form.alpha" class="form-input" />
-                <span>{{ form.alpha }}</span>
-            </label>
+        <div class="col">
+            <div :class="[hovered1 ? 'hovered' : '', 'inpt range']">
+                <label for="iters-input" class="form-label">
+                    <div>
+                        Počet iterácií:
+                        <span>{{ form.iters }}</span>
+                        <toolTip message="Počet iterácií generovania" @tooltip-hovered="tooltipHoveredHandler1" />
+                    </div>
+                    <div>
+                        <input type="range" id="iters-input" min="100" max="2000" step="10" v-model="form.iters"
+                            class="form-input" />
+                    </div>
+                </label>
+
+            </div>
+            <div :class="[hovered2 ? 'hovered' : '', 'inpt range']">
+                <label for="cw-input" class="form-label">
+                    <div>
+                        Content weight:
+                        <span>{{ form.cw }}</span>
+                        <toolTip message="Váha vlastností obsahu, ktorá sa prejaví vo výslednom obrázku"
+                            @tooltip-hovered="tooltipHoveredHandler2" />
+                    </div>
+                    <div>
+                        <input type="range" id="cw-input" min="0" max="1" step="0.005" v-model="form.cw"
+                            class="form-input" />
+                    </div>
+                </label>
+
+            </div>
+            <div :class="[hovered3 ? 'hovered' : '', 'inpt range']">
+                <label for="tw-input" class="form-label">
+                    <div>
+                        Total weight:
+                        <span>{{ form.tw }}</span>
+                        <toolTip message="Sila hladkosti (smoothness)" @tooltip-hovered="tooltipHoveredHandler3" />
+                    </div>
+                    <div>
+                        <input type="range" id="tw-input" min="0" max="10" step="0.1" v-model="form.tw"
+                            class="form-input" />
+                    </div>
+                </label>
+
+            </div>
+        </div>
+        <div class="col">
+            <div :class="[hovered4 ? 'hovered' : '', 'inpt rdio']">
+                <div class="title">
+                    Init:
+                    <toolTip message="Počiatočný obrázok, z ktorého sa začne generovanie"
+                        @tooltip-hovered="tooltipHoveredHandler4" />
+                </div>
+                <label class="b-contain">
+                    <span>Obrázok obsahu</span>
+                    <input type="radio" value="content" checked v-model="form.initValue">
+                    <div class="b-input"></div>
+                </label>
+
+                <label class="b-contain">
+                    <span>Sivý obrázok</span>
+                    <input type="radio" value="gray" v-model="form.initValue">
+                    <div class="b-input"></div>
+                </label>
+
+                <label class="b-contain">
+                    <span>Uniformný obrázok</span>
+                    <input type="radio" value="uniform" v-model="form.initValue">
+                    <div class="b-input"></div>
+                </label>
+
+
+            </div>
+        </div>
+        <div class="col">
+            <div :class="[hovered5 ? 'hovered' : '', 'inpt rdio']">
+                <div class="title">
+                    Init:
+                    <toolTip message="Funkcia pooling, ktorá sa použije v CNN" @tooltip-hovered="tooltipHoveredHandler5" />
+                </div>
+                <label class="b-contain">
+                    <span>max</span>
+                    <input type="radio" value="max" checked v-model="form.pooling">
+                    <div class="b-input"></div>
+                </label>
+
+                <label class="b-contain">
+                    <span>average</span>
+                    <input type="radio" value="average" v-model="form.pooling">
+                    <div class="b-input"></div>
+                </label>
+
+                <label class="b-contain">
+                    <span>l2</span>
+                    <input type="radio" value="l2" v-model="form.pooling">
+                    <div class="b-input"></div>
+                </label>
+
+
+            </div>
         </div>
 
-        <label class="b-contain">
-            <span>This is a checkbox</span>
-            <input type="checkbox" v-model="form.colorize" />
-            <div class="b-input"></div>
-        </label>
-        <label class="b-contain">
-            <span>This is a checkbox</span>
-            <input type="checkbox" v-model="form.flip" />
-            <div class="b-input"></div>
-        </label>
 
-        <label class="b-contain">
-            <span>Random</span>
-            <input type="radio" value="random" v-model="form.initValue">
-            <div class="b-input"></div>
-        </label>
-
-        <label class="b-contain">
-            <span>Style</span>
-            <input type="radio" value="style" v-model="form.initValue">
-            <div class="b-input"></div>
-        </label>
-
-        <label class="b-contain">
-            <span>Content</span>
-            <input type="radio" value="content" v-model="form.initValue">
-            <div class="b-input"></div>
-        </label>
     </form>
 </template>
   
 <script>
+import toolTip from './ToolTip.vue';
 export default {
-    name: "paramsCrowson",
+    //asanoa
+    // p.add_argument('--init', **arg_info('init'),
+    //            choices=['content', 'gray', 'uniform', 'style_mean'],
+    // p.add_argument('--pooling', type=str, default='max', choices=['max', 'average', 'l2'],
+    // help='the model\'s pooling mode')
+
+    name: "paramsNkolkin",
+    components: {
+        toolTip,
+    },
     data() {
         return {
             form: {
-                alpha: 0.75,
-                initValue: 'random',
+                iters: 1000,
+                cw: 0.015,
+                tw: 2,
             },
             paramsData: {},
+            hovered1: false,
+            hovered2: false,
+            hovered3: false,
+            hovered4: false,
+            hovered5: false,
         }
     },
     methods: {
         handleSubmit() {
             this.$emit('paramsData', this.paramsData);
-        }
+        },
+        tooltipHoveredHandler1(value) {
+            this.hovered1 = value;
+        },
+        tooltipHoveredHandler2(value) {
+            this.hovered2 = value;
+        },
+        tooltipHoveredHandler3(value) {
+            this.hovered3 = value;
+        },
+        tooltipHoveredHandler4(value) {
+            this.hovered4 = value;
+        },
+        tooltipHoveredHandler5(value) {
+            this.hovered4 = value;
+        },
     },
     watch: {
         form: {
             immediate: true,
             handler() {
-                this.paramsData.alpha = `--aplha ${this.form.alpha}`;
+                this.paramsData.iters = `-ii ${this.form.iters}`;
+                this.paramsData.cw = `-cw ${this.form.cw}`;
+                this.paramsData.tw = `-tw ${this.form.tw}`;
                 this.paramsData.initValue = `--init ${this.form.initValue}`;
-                this.paramsData.colorize = this.form.colorize ? "" : "--dont_colorize";
-                this.paramsData.flip = this.form.flip ? "--do_flip" : "";
+                this.paramsData.pooling = `--pooling ${this.form.pooling}`;
                 this.handleSubmit();
             },
             deep: true
@@ -71,7 +169,57 @@ export default {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+.form-wrapper {
+    display: flex;
+    gap: 6rem;
+}
+
+.rdio {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+        display: flex;
+        gap: 1rem;
+        line-height: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+.inpt {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+    z-index: 10;
+
+    &.hovered {
+        z-index: 50;
+    }
+}
+
+.range {
+    margin-bottom: 1rem;
+
+    label {
+        display: flex;
+        flex-direction: column;
+
+        div:first-child {
+            display: flex;
+            gap: 1rem;
+            line-height: 1.5rem;
+
+            span {
+                background-color: #E5E5E2;
+                padding: 2px;
+                border-radius: 5px;
+            }
+        }
+    }
+}
+
+
 /*********** Baseline, reset styles ***********/
 input[type="range"] {
     -webkit-appearance: none;

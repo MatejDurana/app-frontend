@@ -7,7 +7,7 @@
                         Alpha:
                         <span>{{ form.alpha }}</span>
                         <toolTip
-                            message="Alpha=1,0 zodpovedá maximálnemu zachovaniu obsahu, Alpha=0,0 je maximálna štylizácia"
+                            message="Alpha=1.0 zodpovedá maximálnemu zachovaniu obsahu, Alpha=0.0 je maximálna štylizácia"
                             @tooltip-hovered="tooltipHoveredHandler4" />
                     </div>
                     <div>
