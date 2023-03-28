@@ -1,9 +1,9 @@
 <template>
   <header class="header">
-    <router-link to="/" class="logo">Style Transfer</router-link>
+    <router-link :to="{ name: 'LandingPage' }" class="logo">Style Transfer</router-link>
     <nav class="nav">
-      <router-link to="/" class="nav-item">Domov</router-link>
-      <router-link to="/modely" class="nav-item">Modely</router-link>
+      <router-link :to="{ name: 'LandingPage' }" class="nav-item">Domov</router-link>
+      <router-link :to="{ name: 'ModelsPage' }" class="nav-item">Modely</router-link>
     </nav>
   </header>
 </template>

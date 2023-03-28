@@ -1,7 +1,7 @@
 <template>
   <div class="landing-page">
     <h1>Vitajte v Style Transfer</h1>
-    <router-link to="/modely">
+    <router-link :to="{ name: 'ModelsPage' }">
       <button>Začať štýlovať</button>
     </router-link>
   </div>

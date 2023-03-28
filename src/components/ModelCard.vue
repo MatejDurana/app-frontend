@@ -1,13 +1,12 @@
 <template>
-  <router-link :to="`model/${model.id}`" class="box">
+  <router-link :to="{ name: 'ModelPage', params: { id: model.id } }" class="box">
     <div class="text">
       <h3>{{ model.name }}</h3>
       <h5>{{ model.fullname }}</h5>
       <p>Priemerný čas vytvárania: {{ model.time }}</p>
     </div>
     <div class="images">
-      <img v-for="i in 4" :key="i" :src="require(`@/assets/model_showcase/${model.id}/${i}.jpg`)"
-        alt="Ukážkový obrázok" />
+      <img v-for="i in 4" :key="i" :src="`images/model_showcase/${model.id}/${i}.jpg`" alt="Ukážkový obrázok" />
     </div>
   </router-link>
 </template> 

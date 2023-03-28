@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="square" ref="square" @mouseover="showTooltip = true" @mouseleave="showTooltip = false">
-            <img src="/icons/info.png" alt="">
+            <img :src="`../icons/info.png`" alt="">
             <transition name="fade">
                 <div v-if="showTooltip" class="tooltip" ref="tooltip" @mouseover="showTooltip = true"
                     @mouseleave="showTooltip = false">

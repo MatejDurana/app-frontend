@@ -12,17 +12,17 @@ import DKToast from 'vue-dk-toast';
 
 const routes = [
   {
-    path: '/',
+    path: '/~dur0133/frontend/',
     name: 'LandingPage',
     component: LandingPage
   },
   {
-    path: '/modely',
+    path: '/~dur0133/frontend/modely',
     name: 'ModelsPage',
     component: ModelsPage
   },
   {
-    path: '/model/:id',
+    path: '/~dur0133/frontend/model/:id',
     name: 'ModelPage',
     component: ModelPage
   }

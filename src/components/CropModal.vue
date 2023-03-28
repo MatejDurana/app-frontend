@@ -6,7 +6,7 @@
             <h2>Obrázky:</h2>
             <div class="imagesSelect">
                 <div class="imageDiv" v-for="(image, index) in this.selectedImages" :key="index">
-                    <img :src="`/images/${image.src}`" @click="setClickedImage('/images/' + image.src)">
+                    <img :src="`../images/${image.src}`" @click="setClickedImage('../images/' + image.src)">
                 </div>
                 alebo
                 <a href="#" role="button" @click.prevent="showFileChooser">
@@ -26,32 +26,32 @@
                 <div class="actions">
                     <a href="#" role="button" @click.prevent="setCrop()">
                         <svg :width="iconSize" :height="iconSize">
-                            <image xlink:href="/icons/select.svg" :width="iconSize" :height="iconSize" />
+                            <image :xlink:href="`../icons/select.svg`" :width="iconSize" :height="iconSize" />
                         </svg>
                     </a>
                     <a href="#" role="button" @click.prevent="setMove()">
                         <svg :width="iconSize" :height="iconSize">
-                            <image xlink:href="/icons/move.svg" :width="iconSize" :height="iconSize" />
+                            <image :xlink:href="`../icons/move.svg`" :width="iconSize" :height="iconSize" />
                         </svg>
                     </a>
                     <a href="#" role="button" @click.prevent="zoom(0.2)">
                         <svg :width="iconSize" :height="iconSize">
-                            <image xlink:href="/icons/zoom_in.svg" :width="iconSize" :height="iconSize" />
+                            <image :xlink:href="`../icons/zoom_in.svg`" :width="iconSize" :height="iconSize" />
                         </svg>
                     </a>
                     <a href="#" role="button" @click.prevent="zoom(-0.2)">
                         <svg :width="iconSize" :height="iconSize">
-                            <image xlink:href="/icons/zoom_out.svg" :width="iconSize" :height="iconSize" />
+                            <image :xlink:href="`../icons/zoom_out.svg`" :width="iconSize" :height="iconSize" />
                         </svg>
                     </a>
                     <a href="#" role="button" @click.prevent="rotate(-90)">
                         <svg :width="iconSize" :height="iconSize">
-                            <image xlink:href="/icons/rotate_left.svg" :width="iconSize" :height="iconSize" />
+                            <image :xlink:href="`../icons/rotate_left.svg`" :width="iconSize" :height="iconSize" />
                         </svg>
                     </a>
                     <a href="#" role="button" @click.prevent="rotate(90)">
                         <svg :width="iconSize" :height="iconSize">
-                            <image xlink:href="/icons/rotate_right.svg" :width="iconSize" :height="iconSize" />
+                            <image :xlink:href="`../icons/rotate_right.svg`" :width="iconSize" :height="iconSize" />
                         </svg>
                     </a>
 
@@ -188,7 +188,7 @@ export default {
 
 
         async setClickedImage(src) {
-            const response = await fetch(src)
+            const response = await fetch("/~dur0133/frontend/" + src)
             const blob = await response.blob()
 
             const reader = new FileReader()
