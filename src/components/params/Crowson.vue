@@ -54,7 +54,7 @@
                 </div>
                 <label class="b-contain">
                     <span>Obrázok obsahu</span>
-                    <input type="radio" value="content" checked v-model="form.initValue">
+                    <input type="radio" value="content" v-model="form.initValue">
                     <div class="b-input"></div>
                 </label>
 
@@ -81,7 +81,7 @@
                 </div>
                 <label class="b-contain">
                     <span>max</span>
-                    <input type="radio" value="max" checked v-model="form.pooling">
+                    <input type="radio" value="max" v-model="form.pooling">
                     <div class="b-input"></div>
                 </label>
 
@@ -108,12 +108,6 @@
 <script>
 import toolTip from './ToolTip.vue';
 export default {
-    //asanoa
-    // p.add_argument('--init', **arg_info('init'),
-    //            choices=['content', 'gray', 'uniform', 'style_mean'],
-    // p.add_argument('--pooling', type=str, default='max', choices=['max', 'average', 'l2'],
-    // help='the model\'s pooling mode')
-
     name: "paramsNkolkin",
     components: {
         toolTip,
@@ -124,6 +118,8 @@ export default {
                 iters: 1000,
                 cw: 0.015,
                 tw: 2,
+                initValue: 'content',
+                pooling: 'max',
             },
             paramsData: {},
             hovered1: false,
@@ -150,7 +146,7 @@ export default {
             this.hovered4 = value;
         },
         tooltipHoveredHandler5(value) {
-            this.hovered4 = value;
+            this.hovered5 = value;
         },
     },
     watch: {
@@ -175,17 +171,7 @@ export default {
     gap: 6rem;
 }
 
-.rdio {
-    display: flex;
-    flex-direction: column;
 
-    .title {
-        display: flex;
-        gap: 1rem;
-        line-height: 1.5rem;
-        margin-bottom: 0.5rem;
-    }
-}
 
 .inpt {
     display: flex;
@@ -195,6 +181,19 @@ export default {
 
     &.hovered {
         z-index: 50;
+    }
+}
+
+.rdio {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    .title {
+        display: flex;
+        gap: 1rem;
+        line-height: 1.5rem;
+        margin-bottom: 0.5rem;
     }
 }
 

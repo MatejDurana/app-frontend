@@ -76,7 +76,7 @@ export default {
     padding: 5px 10px;
     background-color: #E5E5E2;
     color: #1A1A1A;
-    max-width: 20rem;
+    max-width: 15rem;
     min-width: 10rem;
 }
 

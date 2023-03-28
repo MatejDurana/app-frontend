@@ -1,6 +1,6 @@
 <template>
     <div class="modelPage">
-        <div :class="['params', isParamsShown ? 'shown' : '']" ref="params" v-if="this.id != 'msg-net-istucnn'">
+        <div :class="['params', this.id, isParamsShown ? 'shown' : '']" ref="params" v-if="this.id != 'msg-net-istucnn'">
             <div class="content">
                 <div class="inner">
                     <paramsNkolkin v-if="this.id == 'nnst'" @paramsData="handleparamsData" />
@@ -40,7 +40,12 @@
                     <Loading :active="this.isRunning && this.notHovering" loader="bars" color="#00A499" :can-cancel="false"
                         :is-full-page="false" :width=200 :height=200 :z-index=25>
                     </Loading>
-                    <img v-if="response_image" :src="response_image" alt="Image">
+                    <div v-if="response_image">
+                        <a v-if="!this.isRunning" :href="response_image" download="vysledny_obrazok.png">
+                            <img :src="response_image" alt="Výsledný obrázok">
+                        </a>
+                        <img v-else :src="response_image" alt="Výsledný obrázok">
+                    </div>
                     <div v-else class="no_response">
                         <h2>Výsledok nie je vygenerovaný</h2>
                     </div>
@@ -132,45 +137,6 @@ export default {
     },
     created() {
         //console.log(this.id)
-
-        //asanoa
-        // p.add_argument('--init', **arg_info('init'),
-        //            choices=['content', 'gray', 'uniform', 'style_mean'],
-        // p.add_argument('--pooling', type=str, default='max', choices=['max', 'average', 'l2'],
-        // help='the model\'s pooling mode')
-        // p.add_argument('--step-size', '-ss', **arg_info('step_size'),
-        //            help='the step size (learning rate)')
-        // p.add_argument('--initial-iterations', '-ii', **arg_info('initial_iterations'),
-        // help='the number of iterations on the first scale')
-        // p.add_argument('--random-seed', '-r', type=int, default=0,
-        //            help='the random seed')
-        // p.add_argument('--content-weight', '-cw', **arg_info('content_weight'),
-        //             help='the content weight')
-        // p.add_argument('--tv-weight', '-tw', **arg_info('tv_weight'),
-        //            help='the smoothing weight')
-        // p.add_argument('--style-weights', '-sw', type=float, nargs='+', default=None,
-        // metavar='STYLE_WEIGHT', help='the relative weights for each style image')
-
-
-        //gordic
-        // parser.add_argument("--content_weight", type=float,
-        //                 help="weight factor for content loss", default=1e5)
-        // parser.add_argument("--style_weight", type=float,
-        //                     help="weight factor for style loss", default=3e4)
-        // parser.add_argument("--tv_weight", type=float,
-        //                     help="weight factor for total variation loss", default=1e0)
-
-        // parser.add_argument("--optimizer", type=str,
-        //                     choices=['lbfgs', 'adam'], default='lbfgs')
-        // parser.add_argument("--model", type=str,
-        //                     choices=['vgg16', 'vgg19'], default='vgg19')
-        // parser.add_argument("--init_method", type=str,
-        //                     choices=['random', 'content', 'style'], default='content')
-
-
-        //this.params = '--init_method random --content_weight 1000 --style_weight 30 --tv_weight 0.1'
-
-
     },
     mounted() {
         document.addEventListener('click', this.handleClickOutside)
@@ -266,7 +232,7 @@ export default {
                 this.disableGenBtn = true;
                 this.response_image = null;
 
-                const response = await axios.post('http://158.196.145.23:10000/startProcess', {
+                const response = await axios.post('http://158.196.145.23:10100/startProcess', {
                     id: this.id,
                     contentData: this.contentData.image,
                     styleData: this.styleData.image,
@@ -303,7 +269,7 @@ export default {
             let intervalId = setInterval(async () => {
                 console.log("Checkujem")
                 try {
-                    const response = await axios.post('http://158.196.145.23:10000/checkProcess', {}, {
+                    const response = await axios.post('http://158.196.145.23:10100/checkProcess', {}, {
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -340,7 +306,7 @@ export default {
         async closeProcess() {
             this.disableCloseBtn = true;
             try {
-                const response = await axios.post('http://158.196.145.23:10000/closeProcess', {}, {
+                const response = await axios.post('http://158.196.145.23:10100/closeProcess', {}, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -386,9 +352,20 @@ $color5: #1E2838;
         top: -14rem;
         border-radius: 20px;
 
+        &.nnst {
+            height: 12rem;
+            top: -12rem;
+        }
+
+        &.anaoas,
+        &.istucnn-2 {
+            height: 18rem;
+            top: -18rem;
+        }
+
         &.shown {
             transition: all 0.5s ease-in-out;
-            top: 1rem;
+            top: .5rem;
         }
 
         .content {

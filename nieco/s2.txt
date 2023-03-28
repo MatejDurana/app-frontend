@@ -7,14 +7,8 @@ npm run watch
 ssh dur0133@srvfeia0be.vsb.cz
 cd backend/
 source env/bin/activate
-uvicorn main:app --reload --port 10000 --host 158.196.145.23
+uvicorn main:app --reload --host 158.196.145.23 --port 10100
 
-
-
-cd ..
-cd backend/
-source env/bin/activate
-uvicorn main:app --reload --port 10000
 
 
 
@@ -28,3 +22,4 @@ uvicorn main:app --reload --port 10000
 
 
 ps aux
+

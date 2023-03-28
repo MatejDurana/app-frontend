@@ -1,69 +1,189 @@
 <template>
     <form class="form-wrapper" @submit.prevent>
-        <div class="form-group">
-            <label for="alpha-input" class="form-label">
-                Alpha value:
-                <input type="range" id="alpha-input" min="0" max="1" step="0.01" v-model="form.alpha" class="form-input" />
-                <span>{{ form.alpha }}</span>
-            </label>
+        <div class="col">
+            <div :class="[hovered2 ? 'hovered' : '', 'inpt range']">
+                <label for="cw-input" class="form-label">
+                    <div>
+                        Content weight:
+                        <span>{{ form.cw }}</span>
+                        <toolTip message="Váha vlastností obrázka obsahu (10^x, kde x je zvolené číslo)"
+                            @tooltip-hovered="tooltipHoveredHandler2" />
+                    </div>
+                    <div>
+                        <input type="range" id="cw-input" min="2" max="5" step="1" v-model="form.cw" class="form-input" />
+                    </div>
+                </label>
+
+            </div>
+
+            <div :class="[hovered1 ? 'hovered' : '', 'inpt range']">
+                <label for="sw-input" class="form-label">
+                    <div>
+                        Style weight:
+                        <span>{{ form.sw }}</span>
+                        <toolTip message="Váha vlastností obrázka štýlu (10^x, kde x je zvolené číslo)"
+                            @tooltip-hovered="tooltipHoveredHandler1" />
+                    </div>
+                    <div>
+                        <input type="range" id="sw-input" min="1" max="5" step="1" v-model="form.sw" class="form-input" />
+                    </div>
+                </label>
+
+            </div>
+
+            <div :class="[hovered3 ? 'hovered' : '', 'inpt range']">
+                <label for="tw-input" class="form-label">
+                    <div>
+                        Total weight:
+                        <span>{{ form.tw }}</span>
+                        <toolTip message="Sila hladkosti (smoothness) (10^x, kde x je zvolené číslo)"
+                            @tooltip-hovered="tooltipHoveredHandler3" />
+                    </div>
+                    <div>
+                        <input type="range" id="tw-input" min="-1" max="6" step="1" v-model="form.tw" class="form-input" />
+                    </div>
+                </label>
+
+            </div>
+        </div>
+        <div class="col">
+            <div :class="[hovered4 ? 'hovered' : '', 'inpt rdio']">
+                <div class="title">
+                    Init:
+                    <toolTip message="Počiatočný obrázok, z ktorého sa začne generovanie"
+                        @tooltip-hovered="tooltipHoveredHandler4" />
+                </div>
+                <label class="b-contain">
+                    <span>Obrázok obsahu</span>
+                    <input type="radio" value="content" v-model="form.initValue">
+                    <div class="b-input"></div>
+                </label>
+
+                <label class="b-contain">
+                    <span>Obrázok štýlu</span>
+                    <input type="radio" value="style" v-model="form.initValue">
+                    <div class="b-input"></div>
+                </label>
+
+                <label class="b-contain">
+                    <span>Uniformný obrázok</span>
+                    <input type="radio" value="random" v-model="form.initValue">
+                    <div class="b-input"></div>
+                </label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="inpt rdio">
+                <div class="title">
+                    Sieť:
+                </div>
+                <label class="b-contain">
+                    <span>VGG-19</span>
+                    <input type="radio" value="vgg19" v-model="form.model">
+                    <div class="b-input"></div>
+                </label>
+
+                <label class="b-contain">
+                    <span>VGG-16</span>
+                    <input type="radio" value="vgg16" v-model="form.model">
+                    <div class="b-input"></div>
+                </label>
+
+            </div>
+        </div>
+        <div class="col">
+            <div class="inpt rdio">
+                <div class="title">
+                    Optimalizátor:
+                </div>
+                <label class="b-contain">
+                    <span>LBFGS</span>
+                    <input type="radio" value="lbfgs" v-model="form.opt">
+                    <div class="b-input"></div>
+                </label>
+
+                <div class="adam">
+                    <label class="b-contain">
+                        <span>ADAM</span>
+                        <input type="radio" value="adam" v-model="form.opt">
+                        <div class="b-input"></div>
+                    </label>
+                    <toolTip message="Ideálne použiť v kombinácií s Total weight: -1" />
+                </div>
+
+            </div>
         </div>
 
-        <label class="b-contain">
-            <span>This is a checkbox</span>
-            <input type="checkbox" v-model="form.colorize" />
-            <div class="b-input"></div>
-        </label>
-        <label class="b-contain">
-            <span>This is a checkbox</span>
-            <input type="checkbox" v-model="form.flip" />
-            <div class="b-input"></div>
-        </label>
 
-        <label class="b-contain">
-            <span>Random</span>
-            <input type="radio" value="random" v-model="form.initValue">
-            <div class="b-input"></div>
-        </label>
-
-        <label class="b-contain">
-            <span>Style</span>
-            <input type="radio" value="style" v-model="form.initValue">
-            <div class="b-input"></div>
-        </label>
-
-        <label class="b-contain">
-            <span>Content</span>
-            <input type="radio" value="content" v-model="form.initValue">
-            <div class="b-input"></div>
-        </label>
     </form>
 </template>
   
 <script>
+import toolTip from './ToolTip.vue';
+
+/*
+
+    parser.add_argument("--content_weight", type=float, help="weight factor for content loss", default=1e5)
+    parser.add_argument("--style_weight", type=float, help="weight factor for style loss", default=3e4)
+    parser.add_argument("--tv_weight", type=float, help="weight factor for total variation loss", default=1e0)
+
+    parser.add_argument("--optimizer", type=str, choices=['lbfgs', 'adam'], default='lbfgs')
+    parser.add_argument("--model", type=str, choices=['vgg16', 'vgg19'], default='vgg19')
+    parser.add_argument("--init_method", type=str, choices=['random', 'content', 'style'], default='content')
+
+*/
+
 export default {
     name: "paramsGordic",
+    components: {
+        toolTip,
+    },
     data() {
         return {
             form: {
-                alpha: 0.75,
-                initValue: 'random',
+                cw: 5,
+                sw: 4,
+                tw: 0,
+                initValue: 'content',
+                model: 'vgg19',
+                opt: 'lbfgs'
             },
             paramsData: {},
+            hovered1: false,
+            hovered2: false,
+            hovered3: false,
+            hovered4: false,
         }
     },
     methods: {
         handleSubmit() {
             this.$emit('paramsData', this.paramsData);
-        }
+        },
+        tooltipHoveredHandler1(value) {
+            this.hovered1 = value;
+        },
+        tooltipHoveredHandler2(value) {
+            this.hovered2 = value;
+        },
+        tooltipHoveredHandler3(value) {
+            this.hovered3 = value;
+        },
+        tooltipHoveredHandler4(value) {
+            this.hovered4 = value;
+        },
     },
+
     watch: {
         form: {
             immediate: true,
             handler() {
-                this.paramsData.alpha = `--aplha ${this.form.alpha}`;
-                this.paramsData.initValue = `--init ${this.form.initValue}`;
-                this.paramsData.colorize = this.form.colorize ? "" : "--dont_colorize";
-                this.paramsData.flip = this.form.flip ? "--do_flip" : "";
+                this.paramsData.iters = `--content_weight 1e${this.form.cw}`;
+                this.paramsData.cw = `--style_weight 1e${this.form.sw}`;
+                this.paramsData.tw = `--tv_weight 1e${this.form.tw}`;
+                this.paramsData.initValue = `--init_method ${this.form.initValue}`;
+                this.paramsData.pooling = `--model ${this.form.model}`;
+                this.paramsData.optimizer = `--optimizer ${this.form.opt}`;
+
                 this.handleSubmit();
             },
             deep: true
@@ -71,7 +191,70 @@ export default {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+.form-wrapper {
+    display: flex;
+    gap: 6rem;
+}
+
+
+
+.inpt {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+    z-index: 10;
+
+    &.hovered {
+        z-index: 50;
+    }
+}
+
+.rdio {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    .title {
+        display: flex;
+        gap: 1rem;
+        line-height: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+.adam {
+    line-height: 1.5rem;
+    gap: .6rem;
+    display: flex;
+
+    .container {
+        margin-top: -0.08rem;
+    }
+}
+
+.range {
+    margin-bottom: 1rem;
+
+    label {
+        display: flex;
+        flex-direction: column;
+
+        div:first-child {
+            display: flex;
+            gap: 1rem;
+            line-height: 1.5rem;
+
+            span {
+                background-color: #E5E5E2;
+                padding: 2px;
+                border-radius: 5px;
+            }
+        }
+    }
+}
+
+
 /*********** Baseline, reset styles ***********/
 input[type="range"] {
     -webkit-appearance: none;
