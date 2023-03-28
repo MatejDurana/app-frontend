@@ -188,7 +188,7 @@ export default {
 
 
         async setClickedImage(src) {
-            const response = await fetch("/~dur0133/frontend/" + src)
+            const response = await fetch(src)
             const blob = await response.blob()
 
             const reader = new FileReader()
