@@ -263,6 +263,12 @@ export default {
 
             } catch (error) {
                 console.error(error);
+                this.$toast('Server nie je dostupný', {
+                    duration: 2000,
+                    class: 'toast',
+                    type: 'error'
+                });
+                return;
             }
         },
         async checkProcess(intervalTime) {
