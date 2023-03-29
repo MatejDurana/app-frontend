@@ -1,24 +1,27 @@
 # app-frontend
 
-## Project setup
+## Prerequisites
 ```
-npm install
+nvm -v
+0.39.3
+
+npm -v
+8.0.0
+
+node -v
+v16.11.1
+
+serve -v
+13.0.2
+
 ```
 
-### Compiles and hot-reloads for development
+### Install
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+install_script.sh
 ```
 
-### Lints and fixes files
+### Run server
 ```
-npm run lint
+run_server.sh
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
