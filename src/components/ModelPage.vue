@@ -135,9 +135,6 @@ export default {
             params: ''
         }
     },
-    created() {
-        //console.log(this.id)
-    },
     mounted() {
         document.addEventListener('click', this.handleClickOutside)
     },
@@ -199,8 +196,6 @@ export default {
                     this.contentData.image = reader.result;
                 if (type == "style")
                     this.styleData.image = reader.result;
-
-                console.log(reader.result)
             };
         },
 
@@ -225,14 +220,13 @@ export default {
 
             this.params = Object.values(this.paramsData).join(' ');
             await this.$nextTick();
-            console.log(this.params)
             try {
 
                 this.disableCloseBtn = false;
                 this.disableGenBtn = true;
                 this.response_image = null;
 
-                const response = await axios.post('http://158.196.145.23:10100/startProcess', {
+                await axios.post('http://158.196.145.23:10100/startProcess', {
                     id: this.id,
                     contentData: this.contentData.image,
                     styleData: this.styleData.image,
@@ -243,37 +237,22 @@ export default {
                     },
                 });
 
-                //this.response = response.data;
-                console.log(response.data)
-
                 this.isRunning = true;
-
-                let intervalTime = 1000;
-
-                // if (this.id == "anaoas")
-                //     intervalTime = 1000;
-                // else if (this.id == "msg-net-istucnn")
-                //     intervalTime = 1000;
-                // else if (this.id == "istucnn-2")
-                //     intervalTime = 5000;
-                // else if (this.id == "nnst")
-                //     intervalTime = 1000;
-
-                this.checkProcess(intervalTime);
+                this.checkProcess(1000);
 
             } catch (error) {
-                console.error(error);
                 this.$toast('Server nie je dostupný', {
                     duration: 2000,
                     class: 'toast',
                     type: 'error'
                 });
-                return;
+                this.disableCloseBtn = true;
+                this.disableGenBtn = false;
+                this.isRunning = false;
             }
         },
         async checkProcess(intervalTime) {
             let intervalId = setInterval(async () => {
-                console.log("Checkujem")
                 try {
                     const response = await axios.post('http://158.196.145.23:10100/checkProcess', {}, {
                         headers: {
@@ -282,7 +261,6 @@ export default {
                     });
 
                     let res = response.data
-                    console.log(res)
 
                     if (res.output_image)
                         this.response_image = res.output_image
@@ -298,13 +276,20 @@ export default {
                             class: 'toast',
                             type: 'success'
                         });
-                        console.log("Process skoncil, koncim check")
                         clearInterval(intervalId);
                     }
 
 
                 } catch (error) {
-                    console.error(error);
+                    this.$toast('Nastala chyba na strane servera, proces bol ukončený', {
+                        duration: 4000,
+                        class: 'toast',
+                        type: 'error'
+                    });
+                    this.disableCloseBtn = true;
+                    this.disableGenBtn = false;
+                    this.isRunning = false;
+                    clearInterval(intervalId);
                 }
             }, intervalTime);
 
@@ -312,16 +297,12 @@ export default {
         async closeProcess() {
             this.disableCloseBtn = true;
             try {
-                const response = await axios.post('http://158.196.145.23:10100/closeProcess', {}, {
+                await axios.post('http://158.196.145.23:10100/closeProcess', {}, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
                 });
-
-                console.log(response.data);
-
             } catch (error) {
-                console.error(error);
                 this.disableCloseBtn = false;
             }
         }

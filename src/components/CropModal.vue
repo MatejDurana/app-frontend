@@ -126,9 +126,6 @@ export default {
         };
     },
     mounted() {
-        // console.log("Dostal som")
-        // console.log(this.imageData)
-        // console.log("Dostal som")
 
         if (this.imageData.fullImage) {
             this.$refs.cropper.replace(this.imageData.fullImage);
@@ -149,10 +146,7 @@ export default {
             else
                 imgSrc += this.styleImages[0].src;
 
-            //console.log(imgSrc)
             this.fullImage = this.setClickedImage(imgSrc)
-            //console.log("Vkladam default einstein");
-            //console.log(this.fullImage)
         }
 
         this.croppData = this.imageData;
@@ -175,13 +169,6 @@ export default {
             this.croppData.fullImage = this.fullImage;
             this.croppData.cropBoxData = this.cropBoxData;
             this.croppData.cropImageData = this.cropImageData;
-
-
-
-            // console.log("Dostal som")
-            // console.log(this.croppData)
-            // console.log("Dostal som")
-
 
             this.$emit('handleImageData', this.croppData)
         },
