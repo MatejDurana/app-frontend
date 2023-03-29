@@ -23,5 +23,5 @@ install_script.sh
 
 ### Run server
 ```
-run_server.sh
+run_serve.sh
 ```
