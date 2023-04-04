@@ -1,5 +1,5 @@
 <template>
-    <div class="modelPage">
+    <div class="modelPage" v-if="isModel">
         <div :class="['params', this.id, isParamsShown ? 'shown' : '']" ref="params" v-if="this.id != 'msg-net-istucnn'">
             <div class="content">
                 <div class="inner">
@@ -80,6 +80,9 @@
             </div>
         </div>
     </div>
+    <div class="notModel" v-else>
+        Tento model neexistuje, skontrolujte adresu URL
+    </div>
 </template>
   
 <script>
@@ -106,6 +109,8 @@ export default {
     },
     data() {
         return {
+            isModel: false,
+
             paramsData: {},
 
             id: this.$route.params.id,
@@ -134,6 +139,10 @@ export default {
             isParamsShown: false,
             params: ''
         }
+    },
+    created() {
+        if (this.id == "nnst" || this.id == "istucnn-2" || this.id == "anaoas" || this.id == "msg-net-istucnn")
+            this.isModel = true;
     },
     mounted() {
         document.addEventListener('click', this.handleClickOutside)
@@ -319,6 +328,14 @@ $color5: #1E2838;
 
 .toast {
     font-family: "Drive", sans-serif;
+}
+
+.notModel {
+    font-size: 3rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .modelPage {
