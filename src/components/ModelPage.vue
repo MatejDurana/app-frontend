@@ -71,7 +71,7 @@
         <div class="modal" v-if="showModal" @click.self="showModal = false">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>Orezanie obrázka:</h2>
+                    <h2>Výber obrázka:</h2>
                     <span class="close-button" @click="showModal = false">&times;</span>
                 </div>
                 <div class="modal-body">

@@ -76,7 +76,7 @@
         <div class="col">
             <div :class="[hovered5 ? 'hovered' : '', 'inpt rdio']">
                 <div class="title">
-                    Init:
+                    Pooling:
                     <toolTip message="Funkcia pooling, ktorá sa použije v CNN" @tooltip-hovered="tooltipHoveredHandler5" />
                 </div>
                 <label class="b-contain">
