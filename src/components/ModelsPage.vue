@@ -2,10 +2,7 @@
     <div class="models">
         <span>Výber modelu</span>
         <div class="box-container">
-            <ModelCard :model="models[0]" />
-            <ModelCard :model="models[1]" />
-            <ModelCard :model="models[2]" />
-            <ModelCard :model="models[3]" />
+            <ModelCard v-for="i in 4" :key="i" :model="models[i - 1]" />
         </div>
     </div>
 </template>

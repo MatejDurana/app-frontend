@@ -3,9 +3,9 @@
         <div :class="['params', this.id, isParamsShown ? 'shown' : '']" ref="params" v-if="this.id != 'msg-net-istucnn'">
             <div class="content">
                 <div class="inner">
-                    <paramsNkolkin v-if="this.id == 'nnst'" @paramsData="handleparamsData" />
-                    <paramsGordic v-if="this.id == 'istucnn-2'" @paramsData="handleparamsData" />
-                    <paramsCrowson v-if="this.id == 'anaoas'" @paramsData="handleparamsData" />
+                    <paramsNnst v-if="this.id == 'nnst'" @paramsData="handleparamsData" />
+                    <paramsIstucnn v-if="this.id == 'istucnn-2'" @paramsData="handleparamsData" />
+                    <paramsAnaoas v-if="this.id == 'anaoas'" @paramsData="handleparamsData" />
                 </div>
                 <span class="warn">Zmena parametrov môže ovplyvniť čas generovania výsledného obrázku</span>
                 <div class="btn" @click="this.isParamsShown = !this.isParamsShown">
@@ -92,9 +92,9 @@ import CropModal from './CropModal.vue';
 import Loading from 'vue3-loading-overlay';
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 
-import paramsNkolkin from './params/Nkolkin.vue';
-import paramsGordic from './params/Gordic.vue';
-import paramsCrowson from './params/Crowson.vue';
+import paramsNnst from './params/Nnst.vue';
+import paramsIstucnn from './params/Istucnn.vue';
+import paramsAnaoas from './params/Anaoas.vue';
 
 
 export default {
@@ -103,9 +103,9 @@ export default {
         CropModal,
         Loading,
 
-        paramsNkolkin,
-        paramsGordic,
-        paramsCrowson,
+        paramsNnst,
+        paramsIstucnn,
+        paramsAnaoas,
     },
     data() {
         return {
