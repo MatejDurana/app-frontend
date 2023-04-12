@@ -230,7 +230,7 @@ export default {
             const file = e.target.files[0];
 
             if (file.type.indexOf('image/') === -1) {
-                alert('Please select an image file');
+                alert('Prosím zvoľte súbor s obrázkom');
                 return;
             }
 
@@ -239,13 +239,12 @@ export default {
 
                 reader.onload = (event) => {
                     this.fullImage = event.target.result;
-                    // rebuild cropperjs with the updated source
                     this.$refs.cropper.replace(event.target.result);
                 };
 
                 reader.readAsDataURL(file);
             } else {
-                alert('Sorry, FileReader API not supported');
+                alert('Prepáčte, FileReader API toto nepodporuje');
             }
         },
         showFileChooser() {
