@@ -137,7 +137,10 @@ export default {
             currImageData: {},
 
             isParamsShown: false,
-            params: ''
+            params: '',
+
+            host: "http://158.196.145.23",
+            port: "10100"
         }
     },
     created() {
@@ -235,7 +238,7 @@ export default {
                 this.disableGenBtn = true;
                 this.response_image = null;
 
-                await axios.post('http://158.196.145.23:10100/startProcess', {
+                await axios.post(this.host + ':' + this.port + '/startProcess', {
                     id: this.id,
                     contentData: this.contentData.image,
                     styleData: this.styleData.image,
@@ -263,7 +266,7 @@ export default {
         async checkProcess(intervalTime) {
             let intervalId = setInterval(async () => {
                 try {
-                    const response = await axios.post('http://158.196.145.23:10100/checkProcess', {}, {
+                    const response = await axios.post(this.host + ':' + this.port + '/checkProcess', {}, {
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -306,7 +309,7 @@ export default {
         async closeProcess() {
             this.disableCloseBtn = true;
             try {
-                await axios.post('http://158.196.145.23:10100/closeProcess', {}, {
+                await axios.post(this.host + ':' + this.port + '/closeProcess', {}, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
