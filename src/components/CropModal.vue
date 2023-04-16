@@ -101,7 +101,7 @@ export default {
                 { src: 'dog.jpg' },
                 { src: 'einstein.jpeg' },
                 { src: 'town.jpeg' },
-                { src: 'town2.jpg' },
+                { src: 'nature.jpg' },
             ],
             styleImages: [
                 { src: 'night.jpg' },
