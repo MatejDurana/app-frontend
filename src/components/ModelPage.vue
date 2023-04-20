@@ -293,7 +293,7 @@ export default {
 
 
                 } catch (error) {
-                    this.$toast('Nastala chyba na strane servera, proces bol ukončený', {
+                    this.$toast('Nastala chyba komunikácie', {
                         duration: 4000,
                         class: 'toast',
                         type: 'error'
@@ -531,10 +531,6 @@ $color5: #1E2838;
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-
-                    &.hidden {
-                        //display: none;
-                    }
                 }
 
                 img {
@@ -587,11 +583,6 @@ $color5: #1E2838;
             }
         }
 
-
-
-        .generateBtn {}
-
-        .closeBtn {}
     }
 
     //MODAL 
@@ -608,7 +599,6 @@ $color5: #1E2838;
         width: 100%;
         background-color: rgba(0, 0, 0, 0.4);
 
-        /* Modal content */
         .modal-content {
             background-color: $color1;
             padding: 1.5rem;
@@ -621,7 +611,6 @@ $color5: #1E2838;
             overflow-x: hidden;
         }
 
-        /* Modal header */
         .modal-header {
             display: flex;
             padding-inline: 2rem;
@@ -630,18 +619,13 @@ $color5: #1E2838;
             margin-bottom: 20px;
         }
 
-        /* Close button */
         .close-button {
             font-size: 25px;
             font-weight: bold;
             cursor: pointer;
         }
-
-        /* Modal body */
-        .modal-body {}
     }
 
 
 
-}
-</style>
+}</style>

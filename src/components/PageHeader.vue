@@ -21,7 +21,6 @@ $color5: #1E2838;
   align-items: center;
 
   background: rgba(245, 245, 245, 1);
-  //background: linear-gradient(0deg, rgba(229, 229, 226, 1) 0%, rgba(245, 245, 245, 1) 15%);
 
   padding: 1rem;
   color: $color3;

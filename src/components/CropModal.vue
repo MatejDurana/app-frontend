@@ -1,25 +1,12 @@
 <template>
   <div>
-    <input
-      ref="input"
-      type="file"
-      name="image"
-      accept="image/*"
-      @change="setImage"
-    />
+    <input ref="input" type="file" name="image" accept="image/*" @change="setImage" />
 
     <div class="top">
       <h2>Obrázky:</h2>
       <div class="imagesSelect">
-        <div
-          class="imageDiv"
-          v-for="(image, index) in this.selectedImages"
-          :key="index"
-        >
-          <img
-            :src="`../images/${image.src}`"
-            @click="setClickedImage('../images/' + image.src)"
-          />
+        <div class="imageDiv" v-for="(image, index) in this.selectedImages" :key="index">
+          <img :src="`../images/${image.src}`" @click="setClickedImage('../images/' + image.src)" />
         </div>
         alebo
         <a href="#" role="button" @click.prevent="showFileChooser">
@@ -31,71 +18,38 @@
     <div class="content">
       <section class="cropper-area">
         <div class="img-cropper">
-          <vue-cropper
-            ref="cropper"
-            :aspect-ratio="16 / 9"
-            :src="defaultImage"
-            preview=".preview"
-            :guides="false"
-            :center="false"
-            :viewMode="2"
-            :background="false"
-            :autoCropArea="1"
-          />
+          <vue-cropper ref="cropper" :aspect-ratio="16 / 9" :src="defaultImage" preview=".preview" :guides="false"
+            :center="false" :viewMode="2" :background="false" :autoCropArea="1" />
         </div>
         <div class="actions">
           <a href="#" role="button" @click.prevent="setCrop()">
             <svg :width="iconSize" :height="iconSize">
-              <image
-                :xlink:href="`../icons/select.svg`"
-                :width="iconSize"
-                :height="iconSize"
-              />
+              <image :xlink:href="`../icons/select.svg`" :width="iconSize" :height="iconSize" />
             </svg>
           </a>
           <a href="#" role="button" @click.prevent="setMove()">
             <svg :width="iconSize" :height="iconSize">
-              <image
-                :xlink:href="`../icons/move.svg`"
-                :width="iconSize"
-                :height="iconSize"
-              />
+              <image :xlink:href="`../icons/move.svg`" :width="iconSize" :height="iconSize" />
             </svg>
           </a>
           <a href="#" role="button" @click.prevent="zoom(0.2)">
             <svg :width="iconSize" :height="iconSize">
-              <image
-                :xlink:href="`../icons/zoom_in.svg`"
-                :width="iconSize"
-                :height="iconSize"
-              />
+              <image :xlink:href="`../icons/zoom_in.svg`" :width="iconSize" :height="iconSize" />
             </svg>
           </a>
           <a href="#" role="button" @click.prevent="zoom(-0.2)">
             <svg :width="iconSize" :height="iconSize">
-              <image
-                :xlink:href="`../icons/zoom_out.svg`"
-                :width="iconSize"
-                :height="iconSize"
-              />
+              <image :xlink:href="`../icons/zoom_out.svg`" :width="iconSize" :height="iconSize" />
             </svg>
           </a>
           <a href="#" role="button" @click.prevent="rotate(-90)">
             <svg :width="iconSize" :height="iconSize">
-              <image
-                :xlink:href="`../icons/rotate_left.svg`"
-                :width="iconSize"
-                :height="iconSize"
-              />
+              <image :xlink:href="`../icons/rotate_left.svg`" :width="iconSize" :height="iconSize" />
             </svg>
           </a>
           <a href="#" role="button" @click.prevent="rotate(90)">
             <svg :width="iconSize" :height="iconSize">
-              <image
-                :xlink:href="`../icons/rotate_right.svg`"
-                :width="iconSize"
-                :height="iconSize"
-              />
+              <image :xlink:href="`../icons/rotate_right.svg`" :width="iconSize" :height="iconSize" />
             </svg>
           </a>
 
@@ -302,7 +256,6 @@ export default {
 };
 </script>
   
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 $color1: #f5f5f5;
 $color2: #00a499;
@@ -354,7 +307,7 @@ input[type="file"] {
   height: 300px;
   overflow: hidden;
 
-  & > div {
+  &>div {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
