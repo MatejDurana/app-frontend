@@ -1,4 +1,8 @@
-# app-frontend
+# Postup pre spustenie aplikácie
+### Príkazy je potrebné spúšťať v Linux systéme pre ich správnu funkčnosť
+### Frontend a backend musia bežať súčasne (prednastanený je localhost na portoch: frontend - 8000, backend - 10100) 
+
+# Spustenie frontendu - zložka app-frontend
 
 ## Pre sputenie je doporučené mať naištalované nasledovné nástroje s danými verziami
 ```
@@ -30,15 +34,22 @@ fuser -k $PORT/tcp
 serve -s -p $PORT
 ```
 
-# backend
+# Spustenie backendu - zložka backend
 
 ## Pre sputenie je doporučené mať naištalované nasledovné nástroje s danými verziami
 ```
 python3.6 --version
 Python 3.6.9
 
+pip --version                                           
+pip 9.0.1  #(pre python 3.6)
+
+
 python3.10 --version
 Python 3.10.8
+
+pip --version 
+pip 22.2.2  #(pre python 3.10)
 ```
 
 ## Taktiež je kvôli niektorým modelom odporučené mať nainštalovanú platformu CUDA
@@ -53,5 +64,5 @@ install_script.sh
 source env/bin/activate
 PORT=10100
 fuser -k $PORT/tcp
-uvicorn main:app --host 158.196.145.23 --port $PORT 
+uvicorn main:app --host 127.0.0.1 --port $PORT 
 ```
