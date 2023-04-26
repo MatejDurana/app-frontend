@@ -139,7 +139,7 @@ export default {
             isParamsShown: false,
             params: '',
 
-            host: "http://158.196.145.23",
+            host: "http://127.0.0.1",
             port: "10100"
         }
     },
