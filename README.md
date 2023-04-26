@@ -66,3 +66,9 @@ PORT=10100
 fuser -k $PORT/tcp
 uvicorn main:app --host 127.0.0.1 --port $PORT 
 ```
+
+### Zmena IP adresy backendu
+
+1. Zmeníme posledný príkaz pri spúšťaní na -  ```uvicorn main:app --host NOVA_ADRESA --port $PORT```
+2. Zmeníme túto adresu aj vo frontend časti v súbore: <br /> 
+app-frontend/src/components/ModelPage.vue riadok 142 - premenná ```host: "NOVA_ADRESA"```
