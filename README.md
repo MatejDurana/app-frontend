@@ -52,7 +52,7 @@ pip --version
 pip 22.0.2  #(pre python 3.10)
 ```
 
-## Taktiež je kvôli niektorým modelom odporučené mať nainštalovanú platformu CUDA
+## Taktiež je potrebné mať nainštalovanú platformu CUDA
 
 ### Pre nainštalovanie virtuálnych prostredí backendu a jednotlivých modelov je potrebné spustiť súbor
 ```
