@@ -1,4 +1,4 @@
-# Postup pre spustenie aplikácie
+# Postup spustenia aplikácie
 ### Príkazy je potrebné spúšťať v Linux systéme pre ich správnu funkčnosť
 ### Frontend a backend musia bežať súčasne (prednastanený je localhost na portoch: frontend - 8000, backend - 10100) 
 
