@@ -46,10 +46,10 @@ pip 23.1  #(pre python 3.7)
 
 
 python3.10 --version
-Python 3.10.8
+Python 3.10.6
 
 pip --version 
-pip 22.2.2  #(pre python 3.10)
+pip 22.0.2  #(pre python 3.10)
 ```
 
 ## Taktiež je kvôli niektorým modelom odporučené mať nainštalovanú platformu CUDA
