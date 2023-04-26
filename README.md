@@ -38,11 +38,11 @@ serve -s -p $PORT
 
 ## Pre sputenie je doporučené mať naištalované nasledovné nástroje s danými verziami
 ```
-python3.6 --version
-Python 3.6.9
+python3.7 --version
+Python 3.7.16
 
 pip --version                                           
-pip 9.0.1  #(pre python 3.6)
+pip 23.1  #(pre python 3.7)
 
 
 python3.10 --version
